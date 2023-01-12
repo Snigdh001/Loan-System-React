@@ -1,0 +1,24 @@
+.carousel-item {
+    height: 10vh;
+    /* min-height: 350px; */
+    background: no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+  img, svg
+  {
+    display: inline;
+    height: 9vh ;
+    margin-left: 170px;
+  }
+  .headertext
+  {
+    /* position:fixed; */
+    display: inline;
+    margin-left:20px;
+    padding-top: 30px;
+    vertical-align: middle;
+  }
+  
