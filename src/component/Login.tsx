@@ -1,5 +1,6 @@
 import React from 'react'
 import FormHoook from '../Hooks/Form'
+import '../../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import '../component/css/registration.css'
 
 const Login = () => {
@@ -35,7 +36,7 @@ const Login = () => {
                                                                     className="form-control form-control-lg" {...password} />
                                                             </div>
                                                         </div>
-                                                        
+
                                                         <button type="button" className="btn btn-light btn-lg"
                                                             data-mdb-ripple-color="dark" style={{ backgroundColor: "skyblue" }} >Login</button>
                                                     </div>
@@ -51,6 +52,7 @@ const Login = () => {
                 </section>
             </div>
         </div>
+
     )
 }
 

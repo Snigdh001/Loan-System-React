@@ -1,6 +1,8 @@
 import React from 'react'
 import '../component/css/registration.css'
 import FormHoook from '../Hooks/Form'
+import { Await } from 'react-router-dom';
+import signup from '../servies/signup';
 
 const Signup = () => {
     const fname = FormHoook("");
@@ -10,7 +12,20 @@ const Signup = () => {
     const password = FormHoook("");
     const cpassword = FormHoook("");
 
-    
+    const submitHander = async (evt: React.SyntheticEvent) => {
+        evt.preventDefault()
+        const data = {
+            fname: fname.value,
+            lname: lname.value,
+            email: email.value,
+            mobile: mobile.value,
+            password: password.value,
+        };
+        const result = await signup(data);
+    }
+
+
+
 
     return (
         <div>
@@ -21,7 +36,7 @@ const Signup = () => {
                             <div className="col-12">
                                 <div className="card card-registration card-registration-2" style={{ borderRadius: "15px" }}>
                                     <div className="card-body p-0">
-                                        <form action="">
+                                        <form action="" onSubmit={submitHander} >
 
                                             <div className="col-lg-6">
                                                 <div className="p-5">
@@ -50,14 +65,14 @@ const Signup = () => {
                                                         </div>
                                                     </div>
                                                     {/* 
-                                                <!-- <div className="mb-4 pb-2">
-                                                    <select className="select">
-                                                        <option value="1">Position</option>
-                                                        <option value="2">Two</option>
-                                                        <option value="3">Three</option>
-                                                        <option value="4">Four</option>
-                                                    </select>
-                                                </div> --> */}
+                                                                <!-- <div className="mb-4 pb-2">
+                                                                    <select className="select">
+                                                                        <option value="1">Position</option>
+                                                                        <option value="2">Two</option>
+                                                                        <option value="3">Three</option>
+                                                                        <option value="4">Four</option>
+                                                                    </select>
+                                                                </div> --> */}
 
                                                     <div className="mb-4 pb-2">
                                                         <div className="form-outline">
@@ -74,7 +89,7 @@ const Signup = () => {
                                                                     <label className="form-label" htmlFor="form3Examplev5">Mobile
                                                                         Number</label>
                                                                     <input type="text" id="form3Examplev5"
-                                                                        className="form-control form-control-lg" {...mobile}  />
+                                                                        className="form-control form-control-lg" {...mobile} />
                                                                 </div>
                                                             </div>
 
@@ -96,7 +111,7 @@ const Signup = () => {
                                                                 <div className="form-outline">
                                                                     <label className="form-label" htmlFor="form3Examplev5">Password</label>
                                                                     <input type="text" id="form3Examplev5"
-                                                                        className="form-control form-control-lg" {...password}  />
+                                                                        className="form-control form-control-lg" {...password} />
                                                                 </div>
                                                             </div>
 
@@ -112,8 +127,7 @@ const Signup = () => {
 
                                                         </div>
 
-                                                        <button type="button" className="btn btn-light btn-lg"
-                                                            data-mdb-ripple-color="dark" style={{ backgroundColor: "skyblue" }} >Register</button>
+                                                        <button type="button" className="btn btn-light btn-lg"data-mdb-ripple-color="dark"  style={{ backgroundColor: "skyblue" }} >Register</button>
 
                                                     </div>
                                                 </div>
