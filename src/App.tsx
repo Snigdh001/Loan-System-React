@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import { BrowserRouter,Route,Routes} from "react-router-dom";
 import Login from './component/Login';
 import Signup from './component/Signup';
@@ -15,14 +14,9 @@ function App() {
         <Route path="/login" element={<><Header/> <Login/> </>}></Route>
         <Route path="/signup" element={<><Header/> <Signup/></>}></Route>
       </Routes>
-      </BrowserRouter>
-    
-    
-
-      
+      </BrowserRouter>      
     </div>
   );
 }
 
 export default App;
-
