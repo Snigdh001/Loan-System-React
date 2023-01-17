@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import '../component/css/registration.css'
 import FormHoook from '../Hooks/Form'
 import { Await } from 'react-router-dom';
-import signup from '../servies/signup';
+import { signup } from '../servies/Auth';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -15,99 +17,109 @@ const Signup = () => {
     const password = FormHoook("");
     const cpassword = FormHoook("");
     const navigate = useNavigate();
-    const emailregex=/^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i;
-    const passregex=/^[A-Za-z0-9!@#$%^&*()_]{5,16}$/i;
-    const phoneregex= /^[0-9]{9}$/i;
-    const nameregex= /^[a-zA-Z]{3,16}$/i;
-    const [phonecheck,setMob]=useState('')
-    const [emailcheck,setEmail]=useState('');
-    const [namecheck,setName]=useState('');
-    const [passcheck,setPass]=useState('');
-    const [cpasscheck,setcPass]=useState('');
-    const [emailerror,setErroremail]=useState('');
-    const [nameerror,setErroname]=useState('');
-    const [passerror,setErrorpass]=useState('');
-    const [cpasserror,setErrorcpass]=useState('');
-    const [moberror,setErrormob]=useState('');
-    var vn=false;
-    var vmob=false;
-    var vp=false;
-    var vcp=false;
-    var vemail=false;
-    
-    
-    const checkEmail =(e:React.ChangeEvent<HTMLInputElement>)=>{
+    const emailregex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i;
+    const passregex = /^[A-Za-z0-9!@#$%^&*()_]{6,16}$/i;
+    const phoneregex = /^[0-9]{10}$/i;
+    const nameregex = /^[a-zA-Z]{3,16}$/i;
+    const [phonecheck, setMob] = useState('')
+    const [emailcheck, setEmail] = useState('');
+    const [namecheck, setName] = useState('');
+    const [passcheck, setPass] = useState('');
+    const [cpasscheck, setcPass] = useState('');
+    const [emailerror, setErroremail] = useState('');
+    const [nameerror, setErroname] = useState('');
+    const [passerror, setErrorpass] = useState('');
+    const [cpasserror, setErrorcpass] = useState('');
+    const [moberror, setErrormob] = useState('');
+    var vn = false;
+    var vmob = false;
+    var vp = false;
+    var vcp = false;
+    var vemail = false;
+
+
+    const checkEmail = (e: any) => {
         setEmail(e.currentTarget.value);
-        if(emailregex.test(emailcheck) ===false){
+        if (emailregex.test(e.currentTarget.value) === false) {
             setErroremail("Please Enter Valid Email Address");
             return false;
         }
-        else{
+        else {
             setErroremail("Email is Valid")
-            vemail=true;
+            vemail = true;
             return true;
         }
     }
-    const checkName =(e:React.ChangeEvent<HTMLInputElement>)=>{
+    const checkName = (e: any) => {
         setName(e.currentTarget.value);
-        if(nameregex.test(namecheck) ===false){
+        if (nameregex.test(e.currentTarget.value) === false) {
             setErroname("Please Enter Valid Name");
-            
-            return false;
-            
-        }
-        else{
-            setErroname("Name is Valid")
-            vn=true;
-            return true;
-        }
-    }
-    const checkPass =(e:React.ChangeEvent<HTMLInputElement>)=>{
-        setPass(e.currentTarget.value);
-        if(passregex.test(passcheck) ===false){
-            setErrorpass("Please Enter Valid Password");
-            
-            return false;
-        }
-        else{
-            setErrorpass("Password is Valid")
-            vp=true;
-            return true;
-        }
-    }
-    const checkcPass =(e:React.ChangeEvent<HTMLInputElement>)=>{
-        setcPass(e.currentTarget.value);
-        if(passregex.test(cpasscheck) ===false && cpasscheck!==password.value){
-            setErrorcpass("Password Must be Same");
-           
-            return false;
-        }
-        else{
-            setErrorcpass("")
-            vcp=true;
-            return true;
-        }
-    }
-    const checkMob =(e:React.ChangeEvent<HTMLInputElement>)=>{
-        setMob(e.currentTarget.value);
-        if(phoneregex.test(phonecheck) ===false){
-            setErrormob("Please Enter Valid Mobile Number");
-            
-            return false;
-        }
-        else{
-            setErrormob("Mobile Number is Valid")
-            vmob=true;
-            return  true;
-        }
-    }
-    
 
-    const submitHander = async (evt: React.SyntheticEvent) => {
-        evt.preventDefault()
-        {   
-            if(password.value===cpassword.value && vn && vp && vemail && vmob && vcp)
-            {
+            return false;
+
+        }
+        else {
+            setErroname("Name is Valid")
+            vn = true;
+            return true;
+        }
+    }
+    const checkPass = (e: any)  => {
+        setPass(e.currentTarget.value);
+        if (passregex.test(e.currentTarget.value) === false) {
+            setErrorpass("Please Enter Valid Password");
+
+            return false;
+        }
+        else {
+            setErrorpass("Password is Valid")
+            vp = true;
+            return true;
+        }
+    }
+    const checkcPass = (e: any)  => {
+        setcPass(e.currentTarget.value);
+        if (passregex.test(e.currentTarget.value) === false && e.currentTarget.value !== password.value) {
+            setErrorcpass("Password Must be Same");
+
+            return false;
+        }
+        else {
+            setErrorcpass("")
+            vcp = true;
+            return true;
+        }
+    }
+    const checkMob = (e: any) => {
+        setMob(e.currentTarget.value);
+        if (phoneregex.test(e.currentTarget.value) === false) {
+            setErrormob("Please Enter Valid Mobile Number");
+
+            return false;
+        }
+        else {
+            setErrormob("Mobile Number is Valid")
+            vmob = true;
+            return true;
+        }
+    }
+
+
+    const submitHander = async (e: any) => {
+        e.preventDefault()
+        {
+            if (fname.value == "")
+                setErroname("Field is required");
+            if (email.value == "")
+                setErroremail("Field is required");
+            if (mobile.value == "")
+                setErrormob("Field is required");
+            if (password.value == "")
+                setErrorpass("Field is required");
+            if (cpassword.value == "")
+                setErrorcpass("Field is required");
+            
+            if (password.value === cpassword.value && vn && vp && vemail && vmob && vcp) {
                 const data = {
                     fname: fname.value,
                     lname: lname.value,
@@ -116,21 +128,27 @@ const Signup = () => {
                     password: password.value,
                 };
                 const result = await signup(data);
-                navigate('/login');
-                
+                if (result.data.messages.success === "true") {
+                    toast("Account Created Sucessfully");
+                    navigate('/login');
+                }
+                else {
+                    toast("Account Already Created");
+                    }
             }
-            else
+            else 
             {
-                alert("Invalid Credential")
+                toast("Invalid Input Data");
             }
-            
+
         }
-       
+
     }
-    
+
 
     return (
         <div>
+            <ToastContainer />
             <div className="apply_loan">
                 <section className="h-100 h-custom gradient-custom-2">
                     <div className="container py-5 h-100">
@@ -138,7 +156,7 @@ const Signup = () => {
                             <div className="col-12">
                                 <div className="card card-registration card-registration-2" style={{ borderRadius: "15px" }}>
                                     <div className="card-body p-0">
-                                        <form action=""  method='post' onSubmit={submitHander} >
+                                        <form action="" method='post' onSubmit={submitHander} >
                                             <div className="col-lg-6">
                                                 <div className="p-5">
                                                     <h3 className="fw-normal mb-5" style={{ color: "#4835d4" }}>Registration</h3>
@@ -151,8 +169,8 @@ const Signup = () => {
                                                                 <label className="form-label" htmlFor="fname" >First
                                                                     name</label>
                                                                 <input type="text" id="fname"
-                                                                    className="form-control form-control-lg" {...fname} onChangeCapture={checkName} required/>
-                                                                    <p className='text-danger p-2 m-2'>{nameerror}</p>
+                                                                    className="form-control form-control-lg" {...fname} onChangeCapture={checkName} />
+                                                                <p className='text-danger p-2 m-2'>{nameerror}</p>
                                                             </div>
 
                                                         </div>
@@ -162,25 +180,17 @@ const Signup = () => {
                                                                 <label className="form-label" htmlFor="lname">Last name</label>
                                                                 <input type="text" id="lname"
                                                                     className="form-control form-control-lg" {...lname} />
-                                                                    
+                                                                
                                                             </div>
 
                                                         </div>
                                                     </div>
-                                                    {/* 
-                                                                <!-- <div className="mb-4 pb-2">
-                                                                    <select className="select">
-                                                                        <option value="1">Position</option>
-                                                                        <option value="2">Two</option>
-                                                                        <option value="3">Three</option>
-                                                                        <option value="4">Four</option>
-                                                                    </select>
-                                                                </div> --> */}
+
 
                                                     <div className="mb-4 pb-2">
                                                         <div className="form-outline">
                                                             <label className="form-label" htmlFor="email">Email Address</label>
-                                                            <input type="email"  id="email" className="form-control form-control-lg" {...email} onChangeCapture={checkEmail} />
+                                                            <input type="email" id="email" className="form-control form-control-lg" {...email} onChangeCapture={checkEmail} />
                                                             <p className='text-danger p-2 m-2'>{emailerror}</p>
                                                         </div>
                                                     </div>
@@ -193,7 +203,7 @@ const Signup = () => {
                                                                         Number</label>
                                                                     <input type="text" id="mobile"
                                                                         className="form-control form-control-lg" {...mobile} onChangeCapture={checkMob} />
-                                                                        <p className='text-danger p-2 m-2'>{moberror}</p>
+                                                                    <p className='text-danger p-2 m-2'>{moberror}</p>
                                                                 </div>
                                                             </div>
 
@@ -215,8 +225,8 @@ const Signup = () => {
                                                                 <div className="form-outline">
                                                                     <label className="form-label" htmlFor="password">Password</label>
                                                                     <input type="password" id="password"
-                                                                        className="form-control form-control-lg" {...password} onChangeCapture={checkPass} required/>
-                                                                        <p className='text-danger p-2 m-2'>{passerror}</p>
+                                                                        className="form-control form-control-lg" {...password} onChangeCapture={checkPass} />
+                                                                    <p className='text-danger p-2 m-2'>{passerror}</p>
                                                                 </div>
                                                             </div>
 
@@ -226,15 +236,15 @@ const Signup = () => {
                                                                 <div className="form-outline">
                                                                     <label className="form-label" htmlFor="cpassword">Confirm Password</label>
                                                                     <input type="password" id="cpassword"
-                                                                        className="form-control form-control-lg" {...cpassword} onChangeCapture={checkcPass} required/>
-                                                                        <p className='text-danger p-2 m-2'>{cpasserror}</p>
-                                                                       
+                                                                        className="form-control form-control-lg" {...cpassword} onChangeCapture={checkcPass} />
+                                                                    <p className='text-danger p-2 m-2'>{cpasserror}</p>
+
                                                                 </div>
                                                             </div>
 
                                                         </div>
 
-                                                        <button type="submit" className="btn btn-light btn-lg"data-mdb-ripple-color="dark"  style={{ backgroundColor: "skyblue" }} >Register</button>
+                                                        <button type="submit" className="btn btn-light btn-lg" data-mdb-ripple-color="dark" style={{ backgroundColor: "skyblue" }} >Register</button>
 
                                                     </div>
                                                 </div>
