@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter,Route,Routes} from "react-router-dom";
 import Login from './component/Login';
 import Signup from './component/Signup';
@@ -9,10 +9,26 @@ import Home from './component/Home';
 import Adminheader from './component/Adminheader';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AuthRoutes from './component/AuthRoutes';
+import Sidebar from './component/Sidebar';
 
 
   
 function App() {
+  let userLogged ;
+  let role;
+  let allowed;
+
+  useEffect(() => {
+    function checkUserData() {
+      userLogged = localStorage.getItem("Session") as string;
+      console.log(userLogged);
+      role=JSON.parse(userLogged).role
+      allowed=JSON.parse(userLogged).isLoggedin
+    }
+
+  }, []);
+
   return (
     <div>
       <BrowserRouter>
@@ -20,13 +36,13 @@ function App() {
         <Route path='/' element={<> <Header/> <Home/> </>}> </Route>
         <Route path="/login" element={<><Header/> <Login/> </>}></Route>
         <Route path="/signup" element={<><Header/> <Signup/></>}></Route>
-        <Route path='/admin' element={<Adminheader/>}></Route>
-        <Route path='/admindashboard' element={<> <Adminheader/> <Admindashboard/> </>}></Route>
-        <Route path='/userdashboard' element={<Userdashboard/>}></Route>
-        
+        <Route path='/admin' element={<AuthRoutes allowedRole='admin'><Adminheader/></AuthRoutes>}></Route>
+        <Route path='/admindashboard' element={<AuthRoutes allowedRole='admin'><Admindashboard/></AuthRoutes>}></Route>
+        <Route path='/userdashboard' element={<AuthRoutes allowedRole='user'><Userdashboard/></AuthRoutes>}></Route>
+        <Route path="/sidebar" element={<><Header/> <Sidebar/></>}></Route>
       </Routes>
       </BrowserRouter>    
-      <ToastContainer />
+      <ToastContainer limit={1}/>
     </div>
   );
 }

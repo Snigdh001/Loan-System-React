@@ -60,18 +60,36 @@ const Login = () => {
                 if(result.data.messages.success==="true")
                 {
                     
-                    toast("Logged In Successfully! : )");
-                    navigate('/admin');
+                     let session ={
+                        id:result.data.messages.id as string,
+                        role:result.data.messages.role as string ,
+                        isLoggedin:result.data.messages.success as string
+
+                     }
+                    
+                    
+                    localStorage.setItem("Session",JSON.stringify(session));
+
+
+                    if(session.role=="admin")
+                    {
+                        toast("Logged In Successfully! : )");
+                        navigate('/admin');
+                    }
+                    else if(session.role=='user')
+                    {
+                        toast("Logged In Successfully! : )");
+                        navigate('/userdashboard');
+                    }
                 }
                 else{
                     toast("Credentials not Found!");
-                    toast("Login Faild : (");
+                    toast("Login Failed : (");
                 }}}
        
     
     return (
         <div>
-             <ToastContainer />
             <div className="apply_loan">
                 <section className="h-100 h-custom gradient-custom-2">
                     <div className="container py-5 h-100">

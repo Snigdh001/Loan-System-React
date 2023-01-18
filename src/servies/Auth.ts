@@ -7,7 +7,7 @@ interface response {
     success: string|null,
     message:string|null,
     role:string|null,
-    id:number|null
+    id:string|null
   }
 }
 

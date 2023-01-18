@@ -64,7 +64,7 @@ const Signup = () => {
             return true;
         }
     }
-    const checkPass = (e: any)  => {
+    const checkPass = (e: any) => {
         setPass(e.currentTarget.value);
         if (passregex.test(e.currentTarget.value) === false) {
             setErrorpass("Please Enter Valid Password");
@@ -77,7 +77,7 @@ const Signup = () => {
             return true;
         }
     }
-    const checkcPass = (e: any)  => {
+    const checkcPass = (e: any) => {
         setcPass(e.currentTarget.value);
         if (passregex.test(e.currentTarget.value) === false && e.currentTarget.value !== password.value) {
             setErrorcpass("Password Must be Same");
@@ -118,7 +118,7 @@ const Signup = () => {
                 setErrorpass("Field is required");
             if (cpassword.value == "")
                 setErrorcpass("Field is required");
-            
+
             if (password.value === cpassword.value && vn && vp && vemail && vmob && vcp) {
                 const data = {
                     fname: fname.value,
@@ -134,11 +134,10 @@ const Signup = () => {
                 }
                 else {
                     toast("Account Already Created");
-                    }
+                }
             }
-            else 
-            {
-                toast("Invalid Input Data");
+            else {
+                toast("Account Already Created");
             }
 
         }
@@ -180,7 +179,7 @@ const Signup = () => {
                                                                 <label className="form-label" htmlFor="lname">Last name</label>
                                                                 <input type="text" id="lname"
                                                                     className="form-control form-control-lg" {...lname} />
-                                                                
+
                                                             </div>
 
                                                         </div>

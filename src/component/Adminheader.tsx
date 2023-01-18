@@ -2,6 +2,16 @@ import React from 'react'
 import '../../node_modules/bootstrap/dist/js/bootstrap.bundle.js'
 
 const Adminheader = () => {
+
+
+    const logOut = () => {
+        localStorage.removeItem("Session");
+        return true;
+    }
+
+
+
+
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -17,9 +27,9 @@ const Adminheader = () => {
                         <li className="nav-item">
                             <a className="nav-link" href="Admindashboard">Dashboard</a>
                         </li>
-                                                <li className="nav-item">
-                                <a className="nav-link" href="/">LogOut</a>
-                            </li>
+                        <li className="nav-item">
+                            <a className="nav-link" href="/login" onClick={logOut} >LogOut</a>
+                        </li>
                     </ul>
                 </div>
             </nav>
