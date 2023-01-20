@@ -26,7 +26,7 @@ const Login = () => {
             return false;
         }
         else{
-            setErroremail("Email is Valid")
+            setErroremail("")
             return true;
         }
     }
@@ -38,7 +38,7 @@ const Login = () => {
             return false;
         }
         else{
-            setErrorpass("Password is Valid")
+            setErrorpass("")
             return true;
         }
     }
@@ -83,7 +83,7 @@ const Login = () => {
                     }
                 }
                 else{
-                    toast("Credentials not Found!");
+                    toast("Invalid Data");
                     toast("Login Failed : (");
                 }}}
        
