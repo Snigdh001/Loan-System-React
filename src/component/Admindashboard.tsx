@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import { alluser, deleteuser, filter, response ,delresponse} from '../servies/admin'
+import React, { SyntheticEvent, useEffect, useState } from 'react'
+import { alluser, deleteuser, filter, response, optresponse, updateUser } from '../servies/admin'
 import Adminheader from './Adminheader'
 import Box from '@mui/material/Box';
-import { DataGrid, GridColDef, GridToolbar, GridValueGetterParams } from '@mui/x-data-grid'
+import { DataGrid, GridColDef, GridRenderCellParams, GridToolbar, GridValueGetterParams } from '@mui/x-data-grid'
 import './css/admindashboard.css'
 import '../../node_modules/w3-css/w3.css'
 import FormHoook from '../Hooks/Form';
 import { toast } from 'react-toastify';
+import { Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap'
+import { updateLanguageServiceSourceFile } from 'typescript';
 
 
 
@@ -16,15 +18,16 @@ import { toast } from 'react-toastify';
 
 
 const Admindashboard = () => {
-    const [delid, setDelid] = useState("");
+    const [optid, setoptid] = useState("");
     const searchF = FormHoook("");
     const emailF = FormHoook("");
     const mobF = FormHoook("");
     const nameF = FormHoook("");
     const [users, setUsers] = useState<response[]>();
-    const [res, setRes] = useState<delresponse[]>();
+    const [res, setRes] = useState<optresponse[]>();
+    const [isEditOpen, setIsEditOpen] = useState(false);
 
-    
+
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 90 },
         {
@@ -61,44 +64,79 @@ const Admindashboard = () => {
             type: 'string',
             width: 200,
             // editable: true,
-    
+
         },
         {
-            field: 'Action',
-            headerName: 'Action',
-            width: 300,
+            field: 'Delete',
+            headerName: 'Delete',
+            width: 150,
             // editable: true,
             renderCell: (cellValues) => {
                 let deleteid = cellValues.id as string;
-                setDelid(deleteid);
-                
-                const ondelete = async (e:any) => {
+                setoptid(deleteid);
+
+                const ondelete = async (e: any) => {
                     e.preventDefault()
                     
-                    let result= deleteuser(delid).catch(err=>console.log(err));
+                    let result = await deleteuser(optid).catch(err => console.log(err));
                     alluser().then(Res => setUsers(Res.data)).catch(err => console.log(err));
                     toast("User Deleted Sucessfully");
+                    
+                    
                 }
                 return (
                     <button type="button" className="btn btn-info" onClick={ondelete} color="primary"> Delete</button>
-    
                 )
             }
         },
-    
-    
-    
+        {
+            field: 'Edit',
+            headerName: 'Edit',
+            width: 150,
+            // editable: true,
+            renderCell: (cellValues) => {
+                return (
+                    <button type="button" className="btn btn-info"
+                        onClick={(evt) => {
+                            getUserDetails(evt, cellValues);
+
+                        }} color="primary"> Update</button>
+
+                )
+            }
+        }
     ];
+    const [obj, setObj] = useState({
+        id: "",
+        fname: "",
+        lname: "",
+        email: "",
+        mobile: "",
+
+    });
+
+    const getUserDetails = (evt: SyntheticEvent, data: GridRenderCellParams) => {
+        evt.preventDefault();
+        const datain = {
+            id: data.row.id,
+            fname: data.row.fname,
+            lname: data.row.lname,
+            email: data.row.email,
+            mobile: data.row.mobile,
+        }
+        setObj(datain);
+        setIsEditOpen((prevState) => {
+            return true
+        });
+
+
+    }
+
     useEffect(() => {
         let result: any = 0;
         result = alluser().then(Res => setUsers(Res.data)).catch(err => console.log(err));
         // console.log(users);
     }, []);
-
-
-
-
-
     const submitForm = async (e: any) => {
         e.preventDefault()
         {
@@ -115,6 +153,7 @@ const Admindashboard = () => {
     }
 
     return (
+
         <div>
             <Adminheader />
             <div>
@@ -166,6 +205,86 @@ const Admindashboard = () => {
                     </Box>
                 </div>
             </div>
+            {
+                isEditOpen && <>
+                    <Modal isOpen={isEditOpen} size='md' toggle={() => setIsEditOpen(!isEditOpen)} >
+                        <ModalHeader
+                            toggle={() => setIsEditOpen(!isEditOpen)}>
+                            Update Details
+                        </ModalHeader>
+                        <ModalBody>
+
+                            <form onSubmit={async (evt) => {
+                                // edit(editId)
+                                evt.preventDefault();
+                                let data = new FormData(evt.currentTarget);
+                                let formData = {
+
+                                    "fname": data.get("fname"),
+                                    "lname": data.get("lname"),
+                                    "email": data.get("email"),
+                                    "mobile": data.get("mobile"),
+                                };
+                                let res = await updateUser(data, obj.id);
+
+                                if (res.data.messages.success === 'true') {
+                                    setIsEditOpen(false)
+                                    alluser().then(Res => setUsers(Res.data)).catch(err => console.log(err));
+                                    toast.success("Data Updated Successfully")
+                                }
+                                else {
+                                    setIsEditOpen(false)
+
+                                    toast.success("Error Occured");
+                                }
+                            }}>
+                                <Row className='mt-2'>
+                                    <Col>Name
+                                    </Col>
+
+                                    <Col><input type="text" name="fname" className='form-control' defaultValue={obj.fname} /></Col>
+
+                                </Row>
+                                <Row className='mt-2'>
+                                    <Col>Name
+                                    </Col>
+
+                                    <Col><input type="text" name="lname" className='form-control' defaultValue={obj.lname} /></Col>
+
+                                </Row>
+                                <Row className='mt-2'>
+                                    <Col>Email
+                                    </Col>
+                                    <Col><input type="text"
+                                        name="email"
+                                        className='form-control' defaultValue={obj.email} /></Col>
+
+                                </Row>
+                                <Row className='mt-2'>
+                                    <Col>Mobile
+                                    </Col>
+                                    <Col><input type="text"
+                                        name="mobile"
+                                        className='form-control'
+                                        defaultValue={obj.mobile}
+                                    /></Col>
+
+                                </Row>
+
+                                <Row className='mt-4'>
+                                    <Col lg={12} className="row">
+                                        <div className='d-flex justify-content-end'>
+                                            <button onClick={() => setIsEditOpen(false)} className="col-md-3 ms-2 btn btn-success"  >Cancel</button>
+                                            <button type='submit' className="col-md-3 ms-2 btn btn-danger">Update</button>
+
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </form>
+                        </ModalBody>
+                    </Modal>
+                </>
+            }
         </div>
     )
 }

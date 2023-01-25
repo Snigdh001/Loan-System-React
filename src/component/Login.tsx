@@ -56,15 +56,15 @@ const Login = () => {
                     password: password.value,
                 };
                 const result = await login(data);
-                
+                console.log(result);
                 if(result.data.messages.success==="true")
                 {
-                    
+                    // console.log(result.data);
                      let session ={
                         id:result.data.messages.id as string,
                         role:result.data.messages.role as string ,
-                        isLoggedin:result.data.messages.success as string
-
+                        isLoggedin:result.data.messages.success as string,
+                        authorization:result.data.messages.authorization as string,
                      }
                     
                     
@@ -85,7 +85,8 @@ const Login = () => {
                 else{
                     toast("Invalid Data");
                     toast("Login Failed : (");
-                }}}
+                }
+            }}
        
     
     return (

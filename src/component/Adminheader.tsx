@@ -9,9 +9,7 @@ const Adminheader = () => {
         return true;
     }
 
-
-
-
+    
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">

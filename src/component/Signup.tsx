@@ -54,9 +54,7 @@ const Signup = () => {
         setName(e.currentTarget.value);
         if (nameregex.test(e.currentTarget.value) === false) {
             setErroname("Please Enter Valid Name");
-
             return false;
-
         }
         else {
             setErroname("Name is Valid")
@@ -68,7 +66,6 @@ const Signup = () => {
         setPass(e.currentTarget.value);
         if (passregex.test(e.currentTarget.value) === false) {
             setErrorpass("Please Enter Valid Password");
-
             return false;
         }
         else {
@@ -79,22 +76,18 @@ const Signup = () => {
     }
     const checkcPass = (e: any) => {
         setcPass(e.currentTarget.value);
-        if (passregex.test(e.currentTarget.value) === false && e.currentTarget.value !== password.value) {
+        if ( e.currentTarget.value !== password.value ) {
             setErrorcpass("Password Must be Same");
-
-            return false;
         }
         else {
             setErrorcpass("")
             vcp = true;
-            return true;
         }
     }
     const checkMob = (e: any) => {
         setMob(e.currentTarget.value);
         if (phoneregex.test(e.currentTarget.value) === false) {
             setErrormob("Please Enter Valid Mobile Number");
-
             return false;
         }
         else {
@@ -104,7 +97,7 @@ const Signup = () => {
         }
     }
 
-
+    
     const submitHander = async (e: any) => {
         e.preventDefault()
         {
@@ -118,8 +111,8 @@ const Signup = () => {
                 setErrorpass("Field is required");
             if (cpassword.value == "")
                 setErrorcpass("Field is required");
-
-            if (password.value === cpassword.value && vn && vp && vemail && vmob && vcp) {
+                console.error(vn,vp,vemail,vmob,vcp)
+                if (password.value === cpassword.value && password.value.length>=6) {
                 const data = {
                     fname: fname.value,
                     lname: lname.value,
@@ -127,6 +120,7 @@ const Signup = () => {
                     mobile: mobile.value,
                     password: password.value,
                 };
+                console.log(data)
                 const result = await signup(data);
                 if (result.data.messages.success === "true") {
                     toast("Account Created Sucessfully");
@@ -137,7 +131,8 @@ const Signup = () => {
                 }
             }
             else {
-                toast("Account Already Created");
+                // console.error("hi")
+                toast("Invalid Data");
             }
 
         }

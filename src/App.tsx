@@ -10,7 +10,8 @@ import Adminheader from './component/Adminheader';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AuthRoutes from './component/AuthRoutes';
-import Sidebar from './component/Sidebar';
+import Applyloan from './component/Applyloan';
+import LoanApplicationList from './component/LoanApplicationList';
 
 
   
@@ -22,7 +23,7 @@ function App() {
   useEffect(() => {
     function checkUserData() {
       userLogged = localStorage.getItem("Session") as string;
-      console.log(userLogged);
+      // console.log(userLogged);
       role=JSON.parse(userLogged).role
       allowed=JSON.parse(userLogged).isLoggedin
     }
@@ -39,7 +40,8 @@ function App() {
         <Route path='/admin' element={<AuthRoutes allowedRole='admin'><Adminheader/></AuthRoutes>}></Route>
         <Route path='/admindashboard' element={<AuthRoutes allowedRole='admin'><Admindashboard/></AuthRoutes>}></Route>
         <Route path='/userdashboard' element={<AuthRoutes allowedRole='user'><Userdashboard/></AuthRoutes>}></Route>
-        <Route path="/sidebar" element={<><Header/> <Sidebar/></>}></Route>
+        <Route path='/loanapplication' element={<AuthRoutes allowedRole='admin'><LoanApplicationList/></AuthRoutes>}></Route>
+        <Route path='/user/apply' element={<AuthRoutes allowedRole='user'><Applyloan/></AuthRoutes>}></Route>
       </Routes>
       </BrowserRouter>    
       <ToastContainer limit={1}/>
