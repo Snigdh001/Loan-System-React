@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter,Route,Routes} from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from './component/Login';
 import Signup from './component/Signup';
 import Header from './component/Header';
@@ -14,9 +14,9 @@ import Applyloan from './component/Applyloan';
 import LoanApplicationList from './component/LoanApplicationList';
 
 
-  
+
 function App() {
-  let userLogged ;
+  let userLogged;
   let role;
   let allowed;
 
@@ -24,8 +24,8 @@ function App() {
     function checkUserData() {
       userLogged = localStorage.getItem("Session") as string;
       // console.log(userLogged);
-      role=JSON.parse(userLogged).role
-      allowed=JSON.parse(userLogged).isLoggedin
+      role = JSON.parse(userLogged).role
+      allowed = JSON.parse(userLogged).isLoggedin
     }
 
   }, []);
@@ -33,18 +33,18 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<> <Header/> <Home/> </>}> </Route>
-        <Route path="/login" element={<><Header/> <Login/> </>}></Route>
-        <Route path="/signup" element={<><Header/> <Signup/></>}></Route>
-        <Route path='/admin' element={<AuthRoutes allowedRole='admin'><Adminheader/></AuthRoutes>}></Route>
-        <Route path='/admindashboard' element={<AuthRoutes allowedRole='admin'><Admindashboard/></AuthRoutes>}></Route>
-        <Route path='/userdashboard' element={<AuthRoutes allowedRole='user'><Userdashboard/></AuthRoutes>}></Route>
-        <Route path='/loanapplication' element={<AuthRoutes allowedRole='admin'><LoanApplicationList/></AuthRoutes>}></Route>
-        <Route path='/user/apply' element={<AuthRoutes allowedRole='user'><Applyloan/></AuthRoutes>}></Route>
-      </Routes>
-      </BrowserRouter>    
-      <ToastContainer limit={1}/>
+        <Routes>
+          <Route path='/' element={<> <Header/> <Home /> </>}> </Route>
+          <Route path="/login" element={<><Header /> <Login /> </>}></Route>
+          <Route path="/signup" element={<><Header /> <Signup /></>}></Route>
+          <Route path='/admin' element={<AuthRoutes allowedRole='admin'><Adminheader /></AuthRoutes>}></Route>
+          <Route path='/admindashboard' element={<AuthRoutes allowedRole='admin'><Admindashboard /></AuthRoutes>}></Route>
+          <Route path='/userdashboard' element={<AuthRoutes allowedRole='user'><Userdashboard /></AuthRoutes>}></Route>
+          <Route path='/loanapplication' element={<AuthRoutes allowedRole='admin'><LoanApplicationList /></AuthRoutes>}></Route>
+          <Route path='/user/apply' element={<AuthRoutes allowedRole='user'><Applyloan /></AuthRoutes>}></Route>
+        </Routes>
+      </BrowserRouter>
+      <ToastContainer limit={1} />
     </div>
   );
 }

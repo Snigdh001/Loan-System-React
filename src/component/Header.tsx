@@ -18,7 +18,7 @@ const Header = () => {
           <a href="/" className='headerlink'>Home</a>
           <a href="signup" className='headerlink'>Sign Up</a>
           <a href="login" className='headerlink'>Login</a>
-          <a href="#" className='headerlink'>About</a>
+          {/* <a href="#" className='headerlink'>About</a> */}
         </div>
       </div>
       <div className="carousel-item" style={{ backgroundImage: "url('https://source.unsplash.com/bF2vsubyHcQ/1920x1080')"}}>
@@ -29,7 +29,7 @@ const Header = () => {
           <a href="/" className='headerlink'>Home</a>
           <a href="signup" className='headerlink'>Sign Up</a>
           <a href="login" className='headerlink'>Login</a>
-          <a href="#" className='headerlink'>About</a>
+          {/* <a href="#" className='headerlink'>About</a> */}
         </div>
       </div>
       <div className="carousel-item" style={{ backgroundImage: "url('https://source.unsplash.com/szFUQoyvrxM/1920x1080')"}}>
@@ -39,7 +39,7 @@ const Header = () => {
           <a href="/" style={{color:"red"}} className='headerlink'>Home</a>
           <a href="signup" style={{color:"red"}} className='headerlink'>Sign Up</a>
           <a href="login" style={{color:"red"}} className='headerlink'>Login</a>
-          <a href="#" style={{color:"red"}} className='headerlink'>About</a>
+          {/* <a href="#" style={{color:"red"}} className='headerlink'>About</a> */}
         </div>
       </div>
     </div>

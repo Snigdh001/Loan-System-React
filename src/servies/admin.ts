@@ -15,7 +15,6 @@ export interface optresponse {
 message:string|null,
 success:string|null,
 }
-
 export interface editresponse  {
   status : number ,
   error :string|null,
@@ -38,8 +37,6 @@ const alluser = async () =>{
 
     // let userLogged = localStorage.getItem("Session") as string;{ headers:{
     //   'Authorization': getToken()}}
-    
-
       return axios.get<response[]>("http://localhost/snigdh_ci4/Api/allusers",);
   }
   const filter = async (data:any) =>{
@@ -69,10 +66,19 @@ const alluser = async () =>{
     
     return axios.post<editresponse>(`http://localhost/snigdh_ci4/Api/updateuser/${id}`,data);
   }
+  const allApplicationReq = async () =>{
+
+    // let userLogged = localStorage.getItem("Session") as string;{ headers:{
+    //   'Authorization': getToken()}}
+    
+
+      return axios.get("http://localhost/snigdh_ci4/Api/allApplication",);
+  }
+  
 
 
 
 
 
 
-  export {alluser,filter,deleteuser,updateUser,getToken};
+  export {alluser,filter,deleteuser,updateUser,getToken,allApplicationReq};

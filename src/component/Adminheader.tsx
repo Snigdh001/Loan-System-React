@@ -23,7 +23,7 @@ const Adminheader = () => {
                             <a className="nav-link" href="/admin">Home </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="Admindashboard">Dashboard</a>
+                            <a className="nav-link" href="/Admindashboard">Dashboard</a>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" href="/login" onClick={logOut} >LogOut</a>

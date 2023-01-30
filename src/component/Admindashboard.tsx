@@ -2,7 +2,7 @@ import React, { SyntheticEvent, useEffect, useState } from 'react'
 import { alluser, deleteuser, filter, response, optresponse, updateUser } from '../servies/admin'
 import Adminheader from './Adminheader'
 import Box from '@mui/material/Box';
-import { DataGrid, GridColDef, GridRenderCellParams, GridToolbar, GridValueGetterParams } from '@mui/x-data-grid'
+import { DataGrid, GridCellParams, GridColDef, GridRenderCellParams, GridRowId, GridToolbar, GridValueGetterParams } from '@mui/x-data-grid';
 import './css/admindashboard.css'
 import '../../node_modules/w3-css/w3.css'
 import FormHoook from '../Hooks/Form';
@@ -11,13 +11,8 @@ import { Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap'
 import { updateLanguageServiceSourceFile } from 'typescript';
 
 
-
-
-
-
-
-
 const Admindashboard = () => {
+    const [pageSize, setPageSize] = React.useState<number>(5);
     const [optid, setoptid] = useState("");
     const searchF = FormHoook("");
     const emailF = FormHoook("");
@@ -28,6 +23,11 @@ const Admindashboard = () => {
     const [isEditOpen, setIsEditOpen] = useState(false);
 
 
+    useEffect(() => {
+        let result: any = 0;
+        result = alluser().then(Res => setUsers(Res.data)).catch(err => console.log(err));
+        // console.log(users);
+    }, []);
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 90 },
         {
@@ -40,28 +40,24 @@ const Admindashboard = () => {
         {
             field: 'lname',
             headerName: 'Last name',
-            type: 'string',
             width: 200,
             // editable: true,
         },
         {
             field: 'email',
             headerName: 'Email',
-            type: 'string',
             width: 200,
             // editable: true,
         },
         {
             field: 'mobile',
             headerName: 'Mobile',
-            type: 'string',
             width: 200,
             // editable: true,
         },
         {
             field: 'role',
             headerName: 'Role',
-            type: 'string',
             width: 200,
             // editable: true,
 
@@ -77,12 +73,10 @@ const Admindashboard = () => {
 
                 const ondelete = async (e: any) => {
                     e.preventDefault()
-                    
+
                     let result = await deleteuser(optid).catch(err => console.log(err));
                     alluser().then(Res => setUsers(Res.data)).catch(err => console.log(err));
                     toast("User Deleted Sucessfully");
-                    
-                    
                 }
                 return (
                     <button type="button" className="btn btn-info" onClick={ondelete} color="primary"> Delete</button>
@@ -131,12 +125,6 @@ const Admindashboard = () => {
 
 
     }
-
-    useEffect(() => {
-        let result: any = 0;
-        result = alluser().then(Res => setUsers(Res.data)).catch(err => console.log(err));
-        // console.log(users);
-    }, []);
     const submitForm = async (e: any) => {
         e.preventDefault()
         {
@@ -147,33 +135,27 @@ const Admindashboard = () => {
                 name: nameF.value,
             };
             const result = filter(data).then(res => setUsers(res.data)).catch(err => console.log(err));
-            // console.log(users)
+            
 
         }
     }
 
     return (
-
         <div>
             <Adminheader />
             <div>
-
                 <div className="w3-sidebar w3-light-grey w3-bar-block" style={{ width: "10%" }}>
                     <h3 className="w3-bar-item">Loan</h3>
-                    <a href="/admin" className="w3-bar-item w3-button">Home</a>
+                    {/* <a href="/admin" className="w3-bar-item w3-button">Home</a> */}
                     <a href="/admindashboard" className="w3-bar-item w3-button">User List</a>
-                    {/* <a href="#" className="w3-bar-item w3-button">Link 3</a> */}
+                    <a href="/loanapplication" className="w3-bar-item w3-button">Loan Request</a>
                 </div>
-
-
                 <div style={{ marginLeft: "10%" }}>
-
                     <div className="w3-container w3-teal">
                         <h1>User List</h1>
                     </div>
                     <div className="w3-container">
                         <div className='filters'>
-
                             <form action="" id='filterform' onSubmit={submitForm} method="get">
                                 <div className="box">
                                     <label htmlFor="emailf">Email</label>
@@ -195,8 +177,9 @@ const Admindashboard = () => {
                         <DataGrid
                             rows={users ? users : []}
                             columns={columns}
-                            pageSize={10}
-                            rowsPerPageOptions={[5]}
+                            pageSize={pageSize}
+                            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                            rowsPerPageOptions={[5, 10, 20, 40]}
                             checkboxSelection
                             disableSelectionOnClick
                             components={{ Toolbar: GridToolbar }}
@@ -209,8 +192,7 @@ const Admindashboard = () => {
                 isEditOpen && <>
                     <Modal isOpen={isEditOpen} size='md' toggle={() => setIsEditOpen(!isEditOpen)} >
                         <ModalHeader
-                            toggle={() => setIsEditOpen(!isEditOpen)}>
-                            Update Details
+                            toggle={() => setIsEditOpen(!isEditOpen)}>Update Details
                         </ModalHeader>
                         <ModalBody>
 
@@ -234,21 +216,18 @@ const Admindashboard = () => {
                                 }
                                 else {
                                     setIsEditOpen(false)
-
                                     toast.success("Error Occured");
                                 }
                             }}>
                                 <Row className='mt-2'>
                                     <Col>Name
                                     </Col>
-
                                     <Col><input type="text" name="fname" className='form-control' defaultValue={obj.fname} /></Col>
 
                                 </Row>
                                 <Row className='mt-2'>
                                     <Col>Name
                                     </Col>
-
                                     <Col><input type="text" name="lname" className='form-control' defaultValue={obj.lname} /></Col>
 
                                 </Row>
@@ -282,8 +261,7 @@ const Admindashboard = () => {
                                 </Row>
                             </form>
                         </ModalBody>
-                    </Modal>
-                </>
+                    </Modal></>
             }
         </div>
     )

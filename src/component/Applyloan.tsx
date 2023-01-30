@@ -1,6 +1,7 @@
 import React from 'react'
 import '../component/css/loan_registration.css'
 import { loanapply } from '../servies/User'
+import UserHeader from './UserHeader'
 
 const Applyloan = () => {
 
@@ -40,6 +41,7 @@ const Applyloan = () => {
 
     return (
         <>
+        <UserHeader/>
             <form action=""  onSubmit={applyReq} method="post">
                 <div className="apply_loan">
                     <section className="h-100 h-custom gradient-custom-2">
@@ -84,16 +86,6 @@ const Applyloan = () => {
                                                         </div>
 
                                                         <div className="row">
-                                                            {/* <div className="col-md-6 mb-4 pb-2 mb-md-0 pb-md-0">
-                                                            <div className="mb-4 pb-2">
-                                                                <div className="form-outline">
-                                                                    <label className="form-label" htmlFor="form3Examplev5">Mobile
-                                                                        Number</label>
-                                                                    <input type="text" id="form3Examplev5"
-                                                                        className="form-control form-control-lg" />
-                                                                </div>
-                                                            </div>
-                                                        </div> */}
                                                             <div className="col-md-6">
                                                                 <div className="mb-4 pb-2">
                                                                     <label className="form-label" htmlFor="form3Examplev5">Gender : </label>

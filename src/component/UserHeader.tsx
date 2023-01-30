@@ -16,8 +16,8 @@ const UserHeader = () => {
         <div className="logo">
           <img src="https://seeklogo.com/images/H/home-loan-logo-47AE303918-seeklogo.com.png" alt="LOGO" />
           <h1 className='headertext'>WelCome</h1>
-          <a href="/" className='headerlink'>Home</a>
-          <a href="user/apply" className='headerlink'>Apply For Loan</a>
+          <a href="/userdashboard" className='headerlink'>Home</a>
+          <a href="/user/apply" className='headerlink'>Apply For Loan</a>
           <a className="headerlink" href="/login" onClick={logOut} >LogOut</a>
           {/* <a href="login" className='headerlink'>Login</a> */}
         </div>
@@ -28,7 +28,7 @@ const UserHeader = () => {
           <img src="https://seeklogo.com/images/H/home-loan-logo-47AE303918-seeklogo.com.png" alt="LOGO" />
           <h1 className='headertext'>WelCome</h1>
           <a href="/" className='headerlink'>Home</a>
-          <a href="user/apply" className='headerlink'>Apply For Loan</a>
+          <a href="/user/apply" className='headerlink'>Apply For Loan</a>
           {/* <a href="login" className='headerlink'>Login</a> */}
           <a className="headerlink" href="login" onClick={logOut} >LogOut</a>
         </div>
@@ -38,7 +38,7 @@ const UserHeader = () => {
           <img src="https://seeklogo.com/images/H/home-loan-logo-47AE303918-seeklogo.com.png" alt="LOGO" />
           <h1 className='headertext' style={{color:"red"}}>WelCome</h1>
           <a href="/" style={{color:"red"}} className='headerlink'>Home</a>
-          <a href="user/apply" style={{color:"red"}} className='headerlink'>Apply For Loan</a>
+          <a href="/user/apply" style={{color:"red"}} className='headerlink'>Apply For Loan</a>
           {/* <a href="login" style={{color:"red"}} className='headerlink'>Login</a> */}
           <a className="headerlink" style={{color:"red"}} href="/login" onClick={logOut}>LogOut</a>
         </div>
