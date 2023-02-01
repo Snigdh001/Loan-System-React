@@ -7,7 +7,7 @@
     -o-background-size: cover;
     background-size: cover;
   }
-  img, svg
+  .headimg, svg
   {
     display: inline;
     height: 9vh ;
@@ -26,8 +26,8 @@
   .logo >a{
     color: black;
     text-decoration: none;
-    font-size: 29px;
-    margin :14px;
+    font-size: 22px;
+    margin :5px;
     vertical-align: middle;
     padding: 5px;
 }

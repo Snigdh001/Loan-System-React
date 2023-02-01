@@ -1,48 +1,87 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import '../component/css/loan_registration.css'
-import { loanapply } from '../servies/User'
+import { UserDetailResponse, getDetailsApi, loanapply } from '../servies/User'
 import UserHeader from './UserHeader'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { response } from '../servies/admin'
+
+
+
 
 const Applyloan = () => {
+    const navigate = useNavigate();
+    const [userDetails, setUserDetails] = useState<UserDetailResponse>()
+
+
+
+    useEffect(() => {
+
+        let userLogged = localStorage.getItem("Session") as string;
+        let applicantId = JSON.parse(userLogged).id
+        const data = {
+            userId: applicantId
+        }
+
+
+        let result = getDetailsApi(data).then(Res => setUserDetails(Res.data[0])).catch(err => console.log(err));
+
+
+    }, [])
 
     const applyReq = async (e: any) => {
         e.preventDefault()
         let userLogged = localStorage.getItem("Session") as string;
-      // console.log(userLogged);
-        let userid=JSON.parse(userLogged).id
+        // console.log(userLogged);
+        let applicantId = JSON.parse(userLogged).id
         const formdata = new FormData(e.currentTarget)
-        const data ={
-            fname:formdata.get('fname'),
-            lname:formdata.get('lname'),
-            email:formdata.get('email'),
-            gender:formdata.get('gender'),
-            aadhar:formdata.get('aadhar'),
-            pan:  (formdata.get('pan')),
-            profession:formdata.get('profession'),
-            income:formdata.get('income'),
-            loanAmt:formdata.get('loanAmt'),
-            duration:formdata.get('duration'),
-            address1:formdata.get('address1'),
-            address2:formdata.get('address2'),
-            pincode:formdata.get('pincode'),
-            place:formdata.get('place'),
-            country:formdata.get('country'),
-            mobile:formdata.get('mobile'),
-            userid:userid,
+        const data = {
+            fname: formdata.get('fname'),
+            lname: formdata.get('lname'),
+            email: formdata.get('email'),
+            gender: formdata.get('gender'),
+            aadhar: formdata.get('aadhar'),
+            pan: (formdata.get('pan')),
+            profession: formdata.get('profession'),
+            income: formdata.get('income'),
+            loanAmt: formdata.get('loanAmt'),
+            duration: formdata.get('duration'),
+            address1: formdata.get('address1'),
+            address2: formdata.get('address2'),
+            pincode: formdata.get('pincode'),
+            place: formdata.get('place'),
+            state: formdata.get('state'),
+            country: formdata.get('country'),
+            mobile: formdata.get('mobile'),
+            userid: applicantId,
         }
+
+
         // console.log(data)
-        
-        let result = await loanapply(data).then((res) =>{console.log(res.data)}).catch((error) => {console.error(error)});
-        // console.log(result.data);
-        // window.location.reload();
+
+        let result = await loanapply(data)
+        if (result.data.success === 'true') {
+
+            navigate('/userdashboard');
+            toast.success("Successfully Applied")
+
+
+        }
+        else if (result.data.success === 'false') {
+            toast.error(result.data.messages)
+        }
+        else {
+            console.error(result.data)
+        }
+
     }
 
 
 
     return (
         <>
-        <UserHeader/>
-            <form action=""  onSubmit={applyReq} method="post">
+            <UserHeader />
+            <form action="" onSubmit={applyReq} method="post">
                 <div className="apply_loan">
                     <section className="h-100 h-custom gradient-custom-2">
                         <div className="container py-5 h-100">
@@ -56,12 +95,11 @@ const Applyloan = () => {
                                                         <h3 className="fw-normal mb-5" style={{ color: "#4835d4" }}>General Infomation</h3>
                                                         <div className="row">
                                                             <div className="col-md-6 mb-4 pb-2">
-
                                                                 <div className="form-outline">
                                                                     <label className="form-label" htmlFor="form3Examplev2">First
                                                                         name</label>
                                                                     <input type="text" id="form3Examplev2"
-                                                                        name='fname' className="form-control form-control-lg" />
+                                                                        name='fname' className="form-control form-control-lg" defaultValue={userDetails?.fname} disabled />
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-6 mb-4 pb-2">
@@ -69,7 +107,7 @@ const Applyloan = () => {
                                                                 <div className="form-outline">
                                                                     <label className="form-label" htmlFor="form3Examplev3">Last name</label>
                                                                     <input type="text" id="form3Examplev3"
-                                                                        className="form-control form-control-lg" name='lname'/>
+                                                                        className="form-control form-control-lg" name='lname' defaultValue={userDetails?.lname} disabled />
                                                                 </div>
 
                                                             </div>
@@ -81,7 +119,7 @@ const Applyloan = () => {
                                                             <div className="form-outline">
                                                                 <label className="form-label" htmlFor="form3Examplev4">Email Address</label>
                                                                 <input type="text" id="form3Examplev4"
-                                                                    className="form-control form-control-lg" name='email'/>
+                                                                    className="form-control form-control-lg" name='email' defaultValue={userDetails?.email} disabled />
                                                             </div>
                                                         </div>
 
@@ -179,7 +217,7 @@ const Applyloan = () => {
                                                             <div className="form-outline form-white">
                                                                 <input name='address1' type="text" id="form3Examplea2"
                                                                     className="form-control form-control-lg" />
-                                                                <label  className="form-label" htmlFor="form3Examplea2">Flat no. / House No. + Street</label>
+                                                                <label className="form-label" htmlFor="form3Examplea2">Flat no. / House No. + Street</label>
                                                             </div>
                                                         </div>
 
@@ -214,6 +252,13 @@ const Applyloan = () => {
 
                                                         <div className="mb-4 pb-2">
                                                             <div className="form-outline form-white">
+                                                                <input name='state' type="text" id="form3Examplea6"
+                                                                    className="form-control form-control-lg" />
+                                                                <label className="form-label" htmlFor="form3Examplea6">State</label>
+                                                            </div>
+                                                        </div>
+                                                        <div className="mb-4 pb-2">
+                                                            <div className="form-outline form-white">
                                                                 <input name='country' type="text" id="form3Examplea6"
                                                                     className="form-control form-control-lg" />
                                                                 <label className="form-label" htmlFor="form3Examplea6">Country</label>
@@ -225,7 +270,7 @@ const Applyloan = () => {
 
                                                                 <div className="form-outline form-white">
                                                                     <input type="text" id="form3Examplea7"
-                                                                        defaultValue={"+91"} className="form-control form-control-lg" disabled/>
+                                                                        defaultValue={"+91"} className="form-control form-control-lg" disabled />
                                                                     <label className="form-label" htmlFor="form3Examplea7">Country Code </label>
                                                                 </div>
 
@@ -234,7 +279,7 @@ const Applyloan = () => {
 
                                                                 <div className="form-outline form-white">
                                                                     <input name='mobile' type="text" id="form3Examplea8"
-                                                                        className="form-control form-control-lg" />
+                                                                        className="form-control form-control-lg" defaultValue={userDetails?.mobile} disabled />
                                                                     <label className="form-label" htmlFor="form3Examplea8">Phone
                                                                         Number</label>
                                                                 </div>
@@ -273,6 +318,5 @@ const Applyloan = () => {
 
 export default Applyloan
 
-function touppercase() {
-    throw new Error('Function not implemented.')
-}
+
+

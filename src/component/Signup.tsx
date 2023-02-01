@@ -31,11 +31,6 @@ const Signup = () => {
     const [passerror, setErrorpass] = useState('');
     const [cpasserror, setErrorcpass] = useState('');
     const [moberror, setErrormob] = useState('');
-    var vn = false;
-    var vmob = false;
-    var vp = false;
-    var vcp = false;
-    var vemail = false;
 
 
     const checkEmail = (e: any) => {
@@ -45,8 +40,8 @@ const Signup = () => {
             return false;
         }
         else {
-            setErroremail("Email is Valid")
-            vemail = true;
+            setErroremail("")
+
             return true;
         }
     }
@@ -57,8 +52,8 @@ const Signup = () => {
             return false;
         }
         else {
-            setErroname("Name is Valid")
-            vn = true;
+            setErroname("")
+
             return true;
         }
     }
@@ -69,19 +64,19 @@ const Signup = () => {
             return false;
         }
         else {
-            setErrorpass("Password is Valid")
-            vp = true;
+            setErrorpass("")
+
             return true;
         }
     }
     const checkcPass = (e: any) => {
         setcPass(e.currentTarget.value);
-        if ( e.currentTarget.value !== password.value ) {
+        if (e.currentTarget.value !== password.value) {
             setErrorcpass("Password Must be Same");
         }
         else {
             setErrorcpass("")
-            vcp = true;
+
         }
     }
     const checkMob = (e: any) => {
@@ -91,13 +86,12 @@ const Signup = () => {
             return false;
         }
         else {
-            setErrormob("Mobile Number is Valid")
-            vmob = true;
+            setErrormob("")
             return true;
         }
     }
 
-    
+
     const submitHander = async (e: any) => {
         e.preventDefault()
         {
@@ -111,8 +105,8 @@ const Signup = () => {
                 setErrorpass("Field is required");
             if (cpassword.value == "")
                 setErrorcpass("Field is required");
-                console.error(vn,vp,vemail,vmob,vcp)
-                if (password.value === cpassword.value && password.value.length>=6) {
+            // console.error(vn,vp,vemail,vmob,vcp)
+            if (password.value === cpassword.value && password.value.length >= 6 && { checkName } && { checkEmail } && { checkMob } && { checkPass }) {
                 const data = {
                     fname: fname.value,
                     lname: lname.value,
@@ -144,7 +138,7 @@ const Signup = () => {
         <div>
             <ToastContainer />
             <div className="apply_loan">
-                <section className="h-100 h-custom gradient-custom-2">
+                <section style={{height:"88vh"}} className="h-100 h-custom gradient-custom-2">
                     <div className="container py-5 h-100">
                         <div className="row d-flex justify-content-center align-items-center h-100">
                             <div className="col-12">
@@ -201,16 +195,6 @@ const Signup = () => {
                                                                 </div>
                                                             </div>
 
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <div className="mb-4 pb-2">
-                                                                <label className="form-label" htmlFor="gender">Gender : </label>
-                                                                <select className="select form-control form-control-lg"   >
-                                                                    <option value="1">Male/He</option>
-                                                                    <option value="2">Female/She</option>
-                                                                    <option value="3">Other</option>
-                                                                </select>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div className="row">

@@ -8,11 +8,10 @@ import { toast } from 'react-toastify';
 import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
 import { stringify } from 'querystring';
 import { loanAction } from '../servies/User';
-import { wait } from '@testing-library/user-event/dist/utils';
 
 
 
-const LoanApplicationList = () => {
+const DataModel = () => {
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [users, setUsers] = useState();
@@ -109,31 +108,12 @@ const LoanApplicationList = () => {
   const [pageSize, setPageSize] = React.useState<number>(5);
 
 
-  const loanact = async (e: any) => {
-    e.preventDefault()
-    const formdata = new FormData(e.currentTarget)
-    const data = {
-      id: usersDetails.id,
-      userid: usersDetails.userid,
-      remark: formdata.get('remark'),
-      status: formdata.get('status')
-    }
-    console.log(data);
-    let result = await loanAction(data)
-    if (result.data.success === 'true') {
-      toast("Action Applied")
-      allApplicationReq().then((Res: { data: any; }) => setUsers(Res.data)).catch((err: any) => console.log(err));
-      setIsEditOpen(false)
-    }
-    else {
-      console.error("Error Action ")
-    }
-  }
+  
+    
+  
 
   return (
     <>
-      <Adminheader />
-      <Sidebar />
       <div style={{ marginLeft: "10%" }} className='RepArea'>
         <div className='col-12 m-4 p-5'>
           <Box sx={{ height: "70vh", width: '100%' }}>
@@ -157,7 +137,7 @@ const LoanApplicationList = () => {
               toggle={() => setIsEditOpen(!isEditOpen)}>
               Application Details
             </ModalHeader>
-            <form action="" onSubmit={loanact} method="post" >
+            <form action=""  method="post" >
               <ModalBody>
                 <Row className='mt-3'>
                   <Col style={{ textTransform: "uppercase" }} >Applcation ID : {usersDetails.id}</Col>
@@ -197,27 +177,16 @@ const LoanApplicationList = () => {
                   
                 </Row>
                 <Row className='mt-4'>
-                  <Col style={{ textTransform: "uppercase" }} >Status : <select name='status' defaultValue={usersDetails.status} style={{marginLeft:"10px", width: "200px" }} className="select form-control-lg">
+                  <Col style={{ textTransform: "uppercase" }} >Status : <select disabled name='status' defaultValue={usersDetails.status} style={{marginLeft:"10px", width: "200px" }} className="select form-control-lg">
                     <option value="pending">Pending</option>
                     <option value="approved">Approved</option>
                     <option value="rejected">Rejected</option>
                   </select> </Col>
                 </Row>
-                <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Remark :</Col>
-                </Row>
-                <Row className='mt-3'>
-                  <textarea style={{ textTransform: "capitalize", borderRadius: "15px",marginLeft:"5%",padding:"2%",width:"90%"}}  defaultValue={usersDetails.remark} name="remark" id="remark" cols={10} rows={5}></textarea>
-                </Row>
-                <div className="form-check d-flex justify-content-start mb-4 pb-3">
-                  <input className="form-check-input mt-3" type="checkbox" value="" id="form2Example3c" required />
-                  <label className="form-check-label text-black" htmlFor="form2Example3">Please Check me  To process.</label>
-                </div>
                 <Row className='mt-4'>
                   <Col lg={12} className="row">
                     <div className='d-flex justify-content-end'>
                       <button onClick={() => setIsEditOpen(false)} className="col-md-3 ms-2 btn btn-success"  >Cancel</button>
-                      <button type='submit' className="col-md-3 ms-2 btn btn-danger">Save</button>
                     </div>
                   </Col>
                 </Row>
@@ -229,4 +198,4 @@ const LoanApplicationList = () => {
   )
 }
 
-export default LoanApplicationList;
+export default DataModel;

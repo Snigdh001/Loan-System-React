@@ -3,12 +3,12 @@ import axios from "axios";
 import { Session } from "inspector";
 
 export interface response {
-  id: string|null,
-fname: string|null,
-lname:string|null,
-email:string|null,
-mobile:string|null,
-role:string|null,
+  id: string,
+fname: string,
+lname:string,
+email:string,
+mobile:string,
+role:string,
 }
 export interface optresponse {
   id: string|null,
@@ -34,11 +34,12 @@ export interface editresponse  {
 
 
 const alluser = async () =>{
-
-    // let userLogged = localStorage.getItem("Session") as string;{ headers:{
-    //   'Authorization': getToken()}}
-      return axios.get<response[]>("http://localhost/snigdh_ci4/Api/allusers",);
-  }
+  
+      return axios.get<response[]>("http://localhost/snigdh_ci4/Api/allusers",{headers:{
+        'Authorization': getToken()
+      }});
+    }
+  
   const filter = async (data:any) =>{
     let keys = Object.keys(data);
     let values = Object.values(data);

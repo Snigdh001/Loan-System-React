@@ -9,25 +9,27 @@ import FormHoook from '../Hooks/Form';
 import { toast } from 'react-toastify';
 import { Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap'
 import { updateLanguageServiceSourceFile } from 'typescript';
+import { useNavigate } from 'react-router-dom';
 
 
 const Admindashboard = () => {
-    const [pageSize, setPageSize] = React.useState<number>(5);
+    const [pageSize, setPageSize] = React.useState<number>(10);
     const [optid, setoptid] = useState("");
-    const searchF = FormHoook("");
-    const emailF = FormHoook("");
-    const mobF = FormHoook("");
-    const nameF = FormHoook("");
+    let searchF = FormHoook("");
+    let emailF = FormHoook("");
+    let mobF = FormHoook("");
+    let nameF = FormHoook("");
     const [users, setUsers] = useState<response[]>();
-    const [res, setRes] = useState<optresponse[]>();
     const [isEditOpen, setIsEditOpen] = useState(false);
-
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         let result: any = 0;
         result = alluser().then(Res => setUsers(Res.data)).catch(err => console.log(err));
-        // console.log(users);
-    }, []);
+        // console.log(result);
+
+    }, [])
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 90 },
         {
@@ -58,35 +60,14 @@ const Admindashboard = () => {
         {
             field: 'role',
             headerName: 'Role',
-            width: 200,
+            width: 100,
             // editable: true,
 
-        },
-        {
-            field: 'Delete',
-            headerName: 'Delete',
-            width: 150,
-            // editable: true,
-            renderCell: (cellValues) => {
-                let deleteid = cellValues.id as string;
-                setoptid(deleteid);
-
-                const ondelete = async (e: any) => {
-                    e.preventDefault()
-
-                    let result = await deleteuser(optid).catch(err => console.log(err));
-                    alluser().then(Res => setUsers(Res.data)).catch(err => console.log(err));
-                    toast("User Deleted Sucessfully");
-                }
-                return (
-                    <button type="button" className="btn btn-info" onClick={ondelete} color="primary"> Delete</button>
-                )
-            }
         },
         {
             field: 'Edit',
             headerName: 'Edit',
-            width: 150,
+            width: 120,
             // editable: true,
             renderCell: (cellValues) => {
                 return (
@@ -98,8 +79,38 @@ const Admindashboard = () => {
 
                 )
             }
-        }
+        },
+        {
+            field: 'Delete',
+            headerName: 'Delete',
+            width: 120,
+            // editable: true,
+            renderCell: (cellValues) => {
+                let deleteid = cellValues.id as string;
+                setoptid(deleteid);
+
+                const ondelete = async (e: any) => {
+                    e.preventDefault()
+                    setIsDeleteOpen((prevState) => {
+                        setIsDeleteOpen(true)
+                        return true
+                    });
+   
+                }
+                return (
+                    <button type="button" className="btn btn-danger" onClick={ondelete} color="primary"> Delete</button>
+                )
+            }
+        },
     ];
+    const deleteConfirm = async () => {
+
+        setIsDeleteOpen(false)
+        let result = await deleteuser(optid).catch(err => console.log(err));
+        alluser().then(Res => setUsers(Res.data)).catch(err => console.log(err));
+        toast("User Deleted Sucessfully");
+
+    }
     const [obj, setObj] = useState({
         id: "",
         fname: "",
@@ -135,9 +146,14 @@ const Admindashboard = () => {
                 name: nameF.value,
             };
             const result = filter(data).then(res => setUsers(res.data)).catch(err => console.log(err));
-            
-
         }
+    }
+    const resetForm = () => {
+        nameF.resetvaule();
+        emailF.resetvaule();
+        mobF.resetvaule();
+        alluser().then(Res => setUsers(Res.data)).catch(err => console.log(err));
+       
     }
 
     return (
@@ -166,9 +182,10 @@ const Admindashboard = () => {
 
                                     <label htmlFor="mobilef">Mobile</label>
                                     <input type="text" name="mobilef" placeholder='Mobile' {...mobF} id="mobilef" />
-                                    <label htmlFor="search">Search</label>
-                                    <input type="text" name="search" placeholder="Search" {...searchF} id="search" />
-                                    <button type="submit">Apply </button>
+                                    {/* <label htmlFor="search">Search</label> */}
+                                    {/* <input type="text" name="search" placeholder="Search" {...searchF} id="search" /> */}
+                                    <button className="btn btn-success"  type="submit">Apply </button>
+                                    <button className="btn btn-danger" type="button" onClick={resetForm} >Reset </button>
                                 </div>
                             </form>
                         </div>
@@ -262,6 +279,19 @@ const Admindashboard = () => {
                             </form>
                         </ModalBody>
                     </Modal></>
+            }
+            {<>
+                isDeleteOpen &&  <Modal isOpen={isDeleteOpen} size='md' toggle={() => setIsDeleteOpen(!isDeleteOpen)} >
+                    <ModalHeader
+                        toggle={() => setIsDeleteOpen(!isDeleteOpen)}>Confirm
+                    </ModalHeader>
+                    <ModalBody>
+
+                        <button onClick={deleteConfirm} className="col-md-3 ms-2 btn btn-danger">Yes</button>
+                        <button onClick={() => { setIsDeleteOpen(false); toast("Action Cancelled") }} className="col-md-3 ms-2 btn btn-danger">No</button>
+                    </ModalBody>
+                </Modal>
+            </>
             }
         </div>
     )
