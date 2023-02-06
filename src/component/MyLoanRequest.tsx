@@ -8,7 +8,6 @@ const MyLoanRequest = () => {
       <div>
         <UserHeader/>
         <DataModel/>
-        MyLoanRequest
  
     </div>
   )

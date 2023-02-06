@@ -5,9 +5,11 @@ import Box from '@mui/material/Box';
 import { DataGrid, GridCellParams, GridColDef, GridRenderCellParams, GridRowId, GridToolbar, GridValueGetterParams } from '@mui/x-data-grid';
 import { allApplicationReq, alluser, updateUser } from '../servies/admin';
 import { toast } from 'react-toastify';
-import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, Row, Col, Dropdown } from 'reactstrap';
 import { stringify } from 'querystring';
-import { loanAction } from '../servies/User';
+import { allApplicationReqById, loanAction } from '../servies/User';
+import EditIcon from '@mui/icons-material/Edit';
+
 
 
 
@@ -15,6 +17,7 @@ const DataModel = () => {
 
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [users, setUsers] = useState();
+  
   const [usersDetails, setUsersDetails] = useState({
     id: "",
     userid: "",
@@ -100,8 +103,10 @@ const DataModel = () => {
   }
 
   useEffect(() => {
-
-    let result = allApplicationReq().then((Res: { data: any; }) => setUsers(Res.data)).catch((err: any) => console.log(err));
+    let userLogged = localStorage.getItem("Session") as string;
+    let applicantId = JSON.parse(userLogged).id
+    const data = {userId: applicantId}
+    let result = allApplicationReqById(data).then((Res: { data: any; }) => setUsers(Res.data)).catch((err: any) => console.log(err));
 
   }, []);
 
@@ -114,7 +119,7 @@ const DataModel = () => {
 
   return (
     <>
-      <div style={{ marginLeft: "10%" }} className='RepArea'>
+      <div  className='RepArea'>
         <div className='col-12 m-4 p-5'>
           <Box sx={{ height: "70vh", width: '100%' }}>
             <DataGrid
@@ -132,56 +137,68 @@ const DataModel = () => {
       </div>
       {
         isEditOpen && <>
+        
           <Modal isOpen={isEditOpen} size='md' toggle={() => setIsEditOpen(!isEditOpen)} >
             <ModalHeader
-              toggle={() => setIsEditOpen(!isEditOpen)}>
-              Application Details
+              toggle={() => setIsEditOpen(!isEditOpen)} >
+                Application Details
+              
+               
             </ModalHeader>
             <form action=""  method="post" >
-              <ModalBody>
+              <ModalBody >
+                {/* <Row className='mt-3'>
+                  <Col style={{ textTransform: "capitalize" }} >Applcation ID : {usersDetails.id}</Col>
+                  <Col style={{ textTransform: "capitalize" }} >User ID : {usersDetails.userid}</Col>
+                </Row> */}
                 <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Applcation ID : {usersDetails.id}</Col>
-                  <Col style={{ textTransform: "uppercase" }} >User ID : {usersDetails.userid}</Col>
+                  <Col style={{ textTransform: "capitalize" }} >Name : {usersDetails.fname + ' ' + usersDetails.lname}</Col>
+                  <Col style={{ textTransform: "capitalize" }} >Gender : {usersDetails.gender}</Col>
+                  
                 </Row>
                 <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Name : {usersDetails.fname + ' ' + usersDetails.lname}</Col>
-                  <Col style={{ textTransform: "uppercase" }} >Email : {usersDetails.email}</Col>
+                <Col style={{ textTransform: "capitalize" }} >Email : {usersDetails.email}</Col>
                 </Row>
                 <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Gender : {usersDetails.gender}</Col>
-                  <Col style={{ textTransform: "uppercase" }} >Mobile : {usersDetails.mobile}</Col>
+                  <Col style={{ textTransform: "capitalize" }} >Mobile : {usersDetails.mobile}</Col>
                 </Row>
                 <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Aadhar No. : {usersDetails.aadhar}</Col>
-                  <Col style={{ textTransform: "uppercase" }} >Pan Number : {usersDetails.pan}</Col>
+                  <Col style={{ textTransform: "capitalize" }} >Aadhar No. : {usersDetails.aadhar}</Col>
+                  <Col style={{ textTransform: "capitalize" }} >Pan Number : {usersDetails.pan}</Col>
                 </Row>
                 <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Profession : {usersDetails.profession}</Col>
-                  <Col style={{ textTransform: "uppercase" }} >Income : {usersDetails.income}</Col>
+                  <Col style={{ textTransform: "capitalize" }} >Profession : {usersDetails.profession}</Col>
+                  <Col style={{ textTransform: "capitalize" }} >Income : {usersDetails.income}</Col>
                 </Row>
                 <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Loan Amount : {usersDetails.loanAmt}</Col>
-                  <Col style={{ textTransform: "uppercase" }} >Duration : {usersDetails.duration + " Months"}</Col>
+                  <Col style={{ textTransform: "capitalize" }} >Loan Amount : {usersDetails.loanAmt}</Col>
+                  <Col style={{ textTransform: "capitalize" }} >Duration : {usersDetails.duration + " Months"}</Col>
                 </Row>
                 <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Address : {usersDetails.address1 + ', ' + usersDetails.address2 + ', ' + usersDetails.place}</Col>
+                  <Col style={{ textTransform: "capitalize" }} >Address : {usersDetails.address1 + ', ' + usersDetails.address2 + ', ' + usersDetails.place}</Col>
                 </Row>
                 <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Place : {usersDetails.place}</Col>
-                  <Col style={{ textTransform: "uppercase" }} >Pincode : {usersDetails.pincode}</Col>
+                  <Col style={{ textTransform: "capitalize" }} >Place : {usersDetails.place}</Col>
+                  <Col style={{ textTransform: "capitalize" }} >Pincode : {usersDetails.pincode}</Col>
                 </Row>
 
                 <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Country : {usersDetails.country}</Col>
-                  <Col style={{ textTransform: "uppercase" }} >State : {usersDetails.state}</Col>
+                  <Col style={{ textTransform: "capitalize" }} >Country : {usersDetails.country}</Col>
+                  <Col style={{ textTransform: "capitalize" }} >State : {usersDetails.state}</Col>
                   
                 </Row>
                 <Row className='mt-4'>
-                  <Col style={{ textTransform: "uppercase" }} >Status : <select disabled name='status' defaultValue={usersDetails.status} style={{marginLeft:"10px", width: "200px" }} className="select form-control-lg">
+                  <Col style={{ textTransform: "capitalize" }} >Status : <select disabled name='status' defaultValue={usersDetails.status} style={{marginLeft:"10px", width: "200px" }} className="select form-control-lg">
                     <option value="pending">Pending</option>
                     <option value="approved">Approved</option>
                     <option value="rejected">Rejected</option>
                   </select> </Col>
+                </Row>
+                <Row className='mt-3'>
+                  <Col style={{ textTransform: "capitalize" }} >Remark :</Col>
+                </Row>
+                <Row className='mt-3'>
+                  <textarea style={{ textTransform: "capitalize", borderRadius: "15px",marginLeft:"5%",padding:"2%",width:"90%"}}  defaultValue={usersDetails.remark} name="remark" id="remark" cols={10} rows={5} disabled></textarea>
                 </Row>
                 <Row className='mt-4'>
                   <Col lg={12} className="row">

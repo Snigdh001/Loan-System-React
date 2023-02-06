@@ -3,12 +3,15 @@ import axios from "axios";
 import { Session } from "inspector";
 
 export interface response {
+
+  
   id: string,
 fname: string,
 lname:string,
 email:string,
 mobile:string,
 role:string,
+
 }
 export interface optresponse {
   id: string|null,
@@ -33,9 +36,9 @@ export interface editresponse  {
 }
 
 
-const alluser = async () =>{
+const alluser = async (page:number,record:number) =>{
   
-      return axios.get<response[]>("http://localhost/snigdh_ci4/Api/allusers",{headers:{
+      return axios.get(`http://localhost/snigdh_ci4/Api/allusers?page=${page}&recordlimit=${record}`,{headers:{
         'Authorization': getToken()
       }});
     }

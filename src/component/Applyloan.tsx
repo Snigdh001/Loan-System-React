@@ -99,7 +99,7 @@ const Applyloan = () => {
                                                                     <label className="form-label" htmlFor="form3Examplev2">First
                                                                         name</label>
                                                                     <input type="text" id="form3Examplev2"
-                                                                        name='fname' className="form-control form-control-lg" defaultValue={userDetails?.fname} disabled />
+                                                                        name='fname' className="form-control form-control-lg" value={userDetails?.fname}  onChange={()=>{}}/>
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-6 mb-4 pb-2">
@@ -107,7 +107,7 @@ const Applyloan = () => {
                                                                 <div className="form-outline">
                                                                     <label className="form-label" htmlFor="form3Examplev3">Last name</label>
                                                                     <input type="text" id="form3Examplev3"
-                                                                        className="form-control form-control-lg" name='lname' defaultValue={userDetails?.lname} disabled />
+                                                                        className="form-control form-control-lg" name='lname' value={userDetails?.lname}  onChange={()=>{}} />
                                                                 </div>
 
                                                             </div>
@@ -119,7 +119,7 @@ const Applyloan = () => {
                                                             <div className="form-outline">
                                                                 <label className="form-label" htmlFor="form3Examplev4">Email Address</label>
                                                                 <input type="text" id="form3Examplev4"
-                                                                    className="form-control form-control-lg" name='email' defaultValue={userDetails?.email} disabled />
+                                                                    className="form-control form-control-lg" name='email' value={userDetails?.email}  onChange={()=>{}} />
                                                             </div>
                                                         </div>
 
@@ -266,20 +266,12 @@ const Applyloan = () => {
                                                         </div>
 
                                                         <div className="row">
-                                                            <div className="col-md-5 mb-4 pb-2">
-
-                                                                <div className="form-outline form-white">
-                                                                    <input type="text" id="form3Examplea7"
-                                                                        defaultValue={"+91"} className="form-control form-control-lg" disabled />
-                                                                    <label className="form-label" htmlFor="form3Examplea7">Country Code </label>
-                                                                </div>
-
-                                                            </div>
+                                                            
                                                             <div className="col-md-7 mb-4 pb-2">
 
                                                                 <div className="form-outline form-white">
                                                                     <input name='mobile' type="text" id="form3Examplea8"
-                                                                        className="form-control form-control-lg" defaultValue={userDetails?.mobile} disabled />
+                                                                        className="form-control form-control-lg" value={userDetails?.mobile}  onChange={()=>{}} />
                                                                     <label className="form-label" htmlFor="form3Examplea8">Phone
                                                                         Number</label>
                                                                 </div>

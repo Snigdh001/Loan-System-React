@@ -27,4 +27,13 @@ const loanapply = async (data:object) =>{
       return axios.post("http://localhost/snigdh_ci4/Api/getDetails",data);
     
     }
-  export{loanapply,loanAction,getDetailsApi}
+    const allApplicationReqById = async (data:object) =>{
+
+      // let userLogged = localStorage.getItem("Session") as string;{ headers:{
+      //   'Authorization': getToken()}}
+      
+  
+        return axios.post("http://localhost/snigdh_ci4/Api/allApplicationById",data);
+    }
+
+  export{loanapply,loanAction,getDetailsApi,allApplicationReqById}

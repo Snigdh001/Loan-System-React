@@ -10,10 +10,11 @@ import { toast } from 'react-toastify';
 import { Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap'
 import { updateLanguageServiceSourceFile } from 'typescript';
 import { useNavigate } from 'react-router-dom';
+import Sidebar from './Sidebar';
 
 
 const Admindashboard = () => {
-    const [pageSize, setPageSize] = React.useState<number>(10);
+    const [pageSize, setPageSize] = React.useState<number>(5);
     const [optid, setoptid] = useState("");
     let searchF = FormHoook("");
     let emailF = FormHoook("");
@@ -22,14 +23,25 @@ const Admindashboard = () => {
     const [users, setUsers] = useState<response[]>();
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(page);
     const navigate = useNavigate();
 
     useEffect(() => {
         let result: any = 0;
-        result = alluser().then(Res => setUsers(Res.data)).catch(err => console.log(err));
+        result = alluser(page,pageSize).then(Res => {
+            setUsers(Res.data.data);
+            setTotalPages(Res.data.totalpages)
+        }).catch(err => console.log(err));
         // console.log(result);
 
-    }, [])
+    }, [page ,pageSize]  )
+
+    const handlePageChange=(index:number)=>{
+        setPage(index);
+       
+
+    }
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 90 },
         {
@@ -88,14 +100,13 @@ const Admindashboard = () => {
             renderCell: (cellValues) => {
                 let deleteid = cellValues.id as string;
                 setoptid(deleteid);
-
                 const ondelete = async (e: any) => {
                     e.preventDefault()
                     setIsDeleteOpen((prevState) => {
                         setIsDeleteOpen(true)
                         return true
                     });
-   
+
                 }
                 return (
                     <button type="button" className="btn btn-danger" onClick={ondelete} color="primary"> Delete</button>
@@ -103,11 +114,13 @@ const Admindashboard = () => {
             }
         },
     ];
+
+
     const deleteConfirm = async () => {
 
         setIsDeleteOpen(false)
         let result = await deleteuser(optid).catch(err => console.log(err));
-        alluser().then(Res => setUsers(Res.data)).catch(err => console.log(err));
+        alluser(page,pageSize).then(Res => setUsers(Res.data)).catch(err => console.log(err));
         toast("User Deleted Sucessfully");
 
     }
@@ -152,24 +165,17 @@ const Admindashboard = () => {
         nameF.resetvaule();
         emailF.resetvaule();
         mobF.resetvaule();
-        alluser().then(Res => setUsers(Res.data)).catch(err => console.log(err));
-       
+        alluser(page,pageSize).then(Res => setUsers(Res.data)).catch(err => console.log(err));
+
     }
 
     return (
-        <div>
+        <div >
             <Adminheader />
+            <Sidebar />
             <div>
-                <div className="w3-sidebar w3-light-grey w3-bar-block" style={{ width: "10%" }}>
-                    <h3 className="w3-bar-item">Loan</h3>
-                    {/* <a href="/admin" className="w3-bar-item w3-button">Home</a> */}
-                    <a href="/admindashboard" className="w3-bar-item w3-button">User List</a>
-                    <a href="/loanapplication" className="w3-bar-item w3-button">Loan Request</a>
-                </div>
-                <div style={{ marginLeft: "10%" }}>
-                    <div className="w3-container w3-teal">
-                        <h1>User List</h1>
-                    </div>
+                <div style={{ marginLeft: "10%", }}>
+
                     <div className="w3-container">
                         <div className='filters'>
                             <form action="" id='filterform' onSubmit={submitForm} method="get">
@@ -182,26 +188,33 @@ const Admindashboard = () => {
 
                                     <label htmlFor="mobilef">Mobile</label>
                                     <input type="text" name="mobilef" placeholder='Mobile' {...mobF} id="mobilef" />
-                                    {/* <label htmlFor="search">Search</label> */}
-                                    {/* <input type="text" name="search" placeholder="Search" {...searchF} id="search" /> */}
-                                    <button className="btn btn-success"  type="submit">Apply </button>
+                                    <button className="btn btn-success" type="submit">Apply </button>
                                     <button className="btn btn-danger" type="button" onClick={resetForm} >Reset </button>
                                 </div>
                             </form>
                         </div>
                     </div>
-                    <Box sx={{ height: "62vh", width: '90%' }}>
+                    <Box sx={{ height: "72vh", width: '90%' }}>
                         <DataGrid
                             rows={users ? users : []}
                             columns={columns}
                             pageSize={pageSize}
-                            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                            onPageSizeChange={(newPageSize) => {setPageSize(newPageSize);setPage(1)  }}
                             rowsPerPageOptions={[5, 10, 20, 40]}
-                            checkboxSelection
+                            checkboxSelection={true}
+                            
                             disableSelectionOnClick
                             components={{ Toolbar: GridToolbar }}
                             experimentalFeatures={{ newEditingApi: true }}
                         />
+                        <div className="m-2">
+                            {Array.from({ length: totalPages }, (_, index) => (
+
+                                <button key={index} className="ms-2 btn btn-secondary" onClick={() => setPage(index+1)}>
+                                    {index + 1}
+                                </button>
+                            ))}
+                        </div>
                     </Box>
                 </div>
             </div>
@@ -228,12 +241,12 @@ const Admindashboard = () => {
 
                                 if (res.data.messages.success === 'true') {
                                     setIsEditOpen(false)
-                                    alluser().then(Res => setUsers(Res.data)).catch(err => console.log(err));
+                                    alluser(page,pageSize).then(Res => setUsers(Res.data)).catch(err => console.log(err));
                                     toast.success("Data Updated Successfully")
                                 }
                                 else {
                                     setIsEditOpen(false)
-                                    toast.success("Error Occured");
+                                    toast.success("Duplicate Data");
                                 }
                             }}>
                                 <Row className='mt-2'>
@@ -280,8 +293,8 @@ const Admindashboard = () => {
                         </ModalBody>
                     </Modal></>
             }
-            {<>
-                isDeleteOpen &&  <Modal isOpen={isDeleteOpen} size='md' toggle={() => setIsDeleteOpen(!isDeleteOpen)} >
+            {
+                isDeleteOpen && <Modal isOpen={isDeleteOpen} size='md' toggle={() => setIsDeleteOpen(!isDeleteOpen)} >
                     <ModalHeader
                         toggle={() => setIsDeleteOpen(!isDeleteOpen)}>Confirm
                     </ModalHeader>
@@ -291,7 +304,7 @@ const Admindashboard = () => {
                         <button onClick={() => { setIsDeleteOpen(false); toast("Action Cancelled") }} className="col-md-3 ms-2 btn btn-danger">No</button>
                     </ModalBody>
                 </Modal>
-            </>
+
             }
         </div>
     )
