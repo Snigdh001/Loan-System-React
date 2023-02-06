@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import '../component/css/loan_registration.css'
+import './css/loan_registration.css'
 import { UserDetailResponse, getDetailsApi, loanapply } from '../servies/User'
 import UserHeader from './UserHeader'
 import { useNavigate } from 'react-router-dom'
@@ -12,8 +12,19 @@ interface er {pan:"",aadhar:"",income:"",loanAmt:"",duration:"",address1:"",addr
 const Applyloan = () => {
     const navigate = useNavigate();
     const [userDetails, setUserDetails] = useState<UserDetailResponse>()
-    const panregex = /^[A-Z0-9]{10}$/;
+    const panRegex = /^[A-Z0-9]{10}$/;  // Proper Regex for pancard is "/^([A-Z]){5}([0-9]){4}([A-Z]){1}$/" include 5-Alphabet,4-digit,1-Alphabet
     const nameregex = /^[a-zA-Z]{3,16}$/i;
+    const aadharRegex = /^[1-9]{1}[0-9]{11}$/; //replacement regex is "/^\d{12}$/"
+    const incomeRegex = /^[1-9]{1}[0-9]{4,8}$/;
+    const loanRegex = /^[1-9]{1}[0-9]{4,8}$/;
+    const durationRegex = /^[1-9]{1}[0-9]{0,3}$/;
+    const addressRegex = /^[A-Za-z0-9\s,.'-]+$/;
+    const pincodeRegex = /^[0-9]{6}$/;
+    const placeRegex = /^[a-zA-z]{3-30}$/;
+    const stateRegex = /^[a-zA-z.]{2-30}$/;   
+    const countryRegex = /^(Russia|Canada|China|United States|Brazil|Australia|India|Argentina|Kazakhstan|Algeria)$/i;
+
+    
     const [Error, setError] = useState({pan:"",aadhar:"",income:"",loanAmt:"",duration:"",address1:"",address2:"",pincode:"",place:"",state:"",country:""});
     useEffect(() => {
        
@@ -32,7 +43,7 @@ const Applyloan = () => {
     
     
     const checkPan = (e: any) => {
-        if (panregex.test(e.currentTarget.value) === false) {
+        if (panRegex.test(e.currentTarget.value) === false) {
             setError((prevState) => { return { ...prevState, "pan": "please enter valid Pan" } })
             return false;
         }
@@ -42,7 +53,7 @@ const Applyloan = () => {
         }
     }
     const checkAadhar = (e: any) => {
-        if (nameregex.test(e.currentTarget.value) === false) {
+        if (aadharRegex.test(e.currentTarget.value) === false) {
             setError((prevState) => { return { ...prevState, "aadhar": "please enter valid Pan" } })
             return false;
                 }
@@ -52,7 +63,7 @@ const Applyloan = () => {
         }
     }
     const checkIncome = (e: any) => {
-        if (nameregex.test(e.currentTarget.value) === false) {
+        if (incomeRegex.test(e.currentTarget.value) === false) {
             setError((prevState) => { return { ...prevState, "income": "please enter valid Pan" } })
             return false;
         }
@@ -62,7 +73,7 @@ const Applyloan = () => {
         }
     }
     const checkLoanAmt= (e: any) => {
-        if (nameregex.test(e.currentTarget.value) === false) {
+        if (loanRegex.test(e.currentTarget.value) === false) {
             setError((prevState) => { return { ...prevState, "loanAmt": "please enter valid Pan" } })
             return false;
         }
@@ -72,7 +83,7 @@ const Applyloan = () => {
         }
     }
     const checkDuration = (e: any) => {
-        if (nameregex.test(e.currentTarget.value) === false) {
+        if (durationRegex.test(e.currentTarget.value) === false) {
             setError((prevState) => { return { ...prevState, "duration": "please enter valid Pan" } })
             return false;
         }
@@ -82,7 +93,7 @@ const Applyloan = () => {
         }
     }
     const checkAddress1 = (e: any) => {
-        if (nameregex.test(e.currentTarget.value) === false) {
+        if (addressRegex.test(e.currentTarget.value) === false) {
             setError((prevState) => { return { ...prevState, "address1": "please enter valid Pan" } })
             return false;
         }
@@ -92,7 +103,7 @@ const Applyloan = () => {
         }
     }
     const checkAddress2 = (e: any) => {
-        if (nameregex.test(e.currentTarget.value) === false) {
+        if (addressRegex.test(e.currentTarget.value) === false) {
             setError((prevState) => { return { ...prevState, "address2": "please enter valid Pan" } })
             return false;
         }
@@ -102,7 +113,7 @@ const Applyloan = () => {
         }
     }
     const checkPincode = (e: any) => {
-        if (nameregex.test(e.currentTarget.value) === false) {
+        if (pincodeRegex.test(e.currentTarget.value) === false) {
             setError((prevState) => { return { ...prevState, "pincode": "please enter valid Pan" } })
             return false;
         }
@@ -112,7 +123,7 @@ const Applyloan = () => {
         }
     }
     const checkPlace = (e: any) => {
-        if (nameregex.test(e.currentTarget.value) === false) {
+        if (placeRegex.test(e.currentTarget.value) === false) {
             setError((prevState) => { return { ...prevState, "place": "please enter valid Pan" } })
             return false;
         }
@@ -122,7 +133,7 @@ const Applyloan = () => {
         }
     }
     const checkState = (e: any) => {
-        if (nameregex.test(e.currentTarget.value) === false) {
+        if (stateRegex.test(e.currentTarget.value) === false) {
             setError((prevState) => { return { ...prevState, "state": "please enter valid Pan" } })
             return false;
         }
@@ -132,7 +143,7 @@ const Applyloan = () => {
         }
     }
     const checkCountry = (e: any) => {
-        if (nameregex.test(e.currentTarget.value) === false) {
+        if (countryRegex.test(e.currentTarget.value) === false) {
             setError((prevState) => { return { ...prevState, "country": "please enter valid Pan" } })
             return false;
         }
@@ -249,17 +260,17 @@ const Applyloan = () => {
                                                             <div className="col-md-6 mb-4 pb-2">
                                                                 <div className="form-outline">
                                                                     <label className="form-label" htmlFor="form3Examplev2">First
-                                                                        name</label>
+                                                                        Name</label>
                                                                     <input type="text" id="form3Examplev2"
-                                                                        name='fname' className="form-control form-control-lg" value={userDetails?.fname}  onChange={()=>{}}/>
+                                                                        name='fname' className="form-control form-control-lg cap" value={userDetails?.fname}  onChange={()=>{}}/>
                                                                 </div>
                                                             </div>
                                                             <div className="col-md-6 mb-4 pb-2">
 
                                                                 <div className="form-outline">
-                                                                    <label className="form-label" htmlFor="form3Examplev3">Last name</label>
+                                                                    <label className="form-label" htmlFor="form3Examplev3">Last Name</label>
                                                                     <input type="text" id="form3Examplev3"
-                                                                        className="form-control form-control-lg" name='lname' value={userDetails?.lname}  onChange={()=>{}} />
+                                                                        className="form-control form-control-lg cap" name='lname' value={userDetails?.lname}  onChange={()=>{}} />
                                                                 </div>
 
                                                             </div>
@@ -271,7 +282,7 @@ const Applyloan = () => {
                                                             <div className="form-outline">
                                                                 <label className="form-label" htmlFor="form3Examplev4">Email Address</label>
                                                                 <input type="text" id="form3Examplev4"
-                                                                    className="form-control form-control-lg" name='email' value={userDetails?.email}  onChange={()=>{}} />
+                                                                    className="form-control form-control-lg cap" name='email' value={userDetails?.email}  onChange={()=>{}} />
                                                             </div>
                                                         </div>
 
@@ -295,7 +306,7 @@ const Applyloan = () => {
                                                                             Number</label>
                                                                         <input name='aadhar' type="text" id="form3Examplev5"
                                                                             className="form-control form-control-lg" onChangeCapture={checkAadhar} />
-                                                                            <p className='text-danger p-2 m-2' >{Error.aadhar}</p>
+                                                                            <p className='text-danger p-2 m-2 cap' >{Error.aadhar}</p>
                                                                     </div>
                                                                 </div>
 
@@ -306,8 +317,8 @@ const Applyloan = () => {
                                                                         <label className="form-label" htmlFor="form3Examplev5">Pan
                                                                             Number</label>
                                                                         <input name='pan' type="text" id="form3Examplev5" 
-                                                                            className="form-control form-control-lg" onChangeCapture={checkPan}/>
-                                                                            <p className='text-danger p-2 m-2' >{Error.pan}</p>
+                                                                            className="form-control form-control-lg " style={{textTransform:"uppercase",}} onChangeCapture={checkPan}/>
+                                                                            <p className='text-danger p-2 m-2 cap' >{Error.pan}</p>
                                                                     </div>
                                                                 </div>
 
@@ -324,7 +335,7 @@ const Applyloan = () => {
                                                                     <select name='profession' className="select form-control form-control-lg">
                                                                         <option value="Salaried">Salaried</option>
                                                                         <option value="SelfEmployed">Self Employed</option>
-                                                                        <option value="Other">Other</option>
+                                                                        {/* <option value="Other">Other</option> */}
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -334,7 +345,7 @@ const Applyloan = () => {
                                                                         <label className="form-label" htmlFor="form3Examplev5">Annual Income</label>
                                                                         <input name='income' type="text" id="form3Examplev5"
                                                                             className="form-control form-control-lg" onChangeCapture={checkIncome}/>
-                                                                            <p className='text-danger p-2 m-2' >{Error.income}</p>
+                                                                            <p className='text-danger p-2 m-2 cap' >{Error.income}</p>
                                                                     </div>
                                                                 </div>
 
@@ -348,7 +359,7 @@ const Applyloan = () => {
                                                                         <label className="form-label" htmlFor="form3Examplev5">Loan Amount</label>
                                                                         <input name='loanAmt' type="text" id="form3Examplev5"
                                                                             className="form-control form-control-lg" onChangeCapture={checkLoanAmt}/>
-                                                                            <p className='text-danger p-2 m-2' >{Error.loanAmt}</p>
+                                                                            <p className='text-danger p-2 m-2 cap' >{Error.loanAmt}</p>
                                                                     </div>
                                                                 </div>
 
@@ -359,7 +370,7 @@ const Applyloan = () => {
                                                                         <label className="form-label" htmlFor="form3Examplev5">Duration (In month)</label>
                                                                         <input name='duration' type="text" id="form3Examplev5"
                                                                             className="form-control form-control-lg" onChangeCapture={checkDuration}/>
-                                                                            <p className='text-danger p-2 m-2' >{Error.duration}</p>
+                                                                            <p className='text-danger p-2 m-2 cap' >{Error.duration}</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -373,18 +384,18 @@ const Applyloan = () => {
                                                         <div className="mb-4 pb-2">
                                                             <div className="form-outline form-white">
                                                                 <input name='address1' type="text" id="form3Examplea2"
-                                                                    className="form-control form-control-lg" onChangeCapture={checkAddress1}/>
+                                                                    className="form-control form-control-lg  cap" onChangeCapture={checkAddress1}/>
                                                                 <label className="form-label" htmlFor="form3Examplea2">Flat no. / House No. + Street</label>
-                                                                <p className='text-danger p-2 m-2' >{Error.address1}</p>
+                                                                <strong className='text-danger p-2 m-2 cap ' >{Error.address1}</strong>
                                                             </div>
                                                         </div>
 
                                                         <div className="mb-4 pb-2">
                                                             <div className="form-outline form-white">
                                                                 <input type="text" name='address2' id="form3Examplea3"
-                                                                    className="form-control form-control-lg" onChangeCapture={checkAddress2}/>
+                                                                    className="form-control form-control-lg cap" onChangeCapture={checkAddress2}/>
                                                                 <label className="form-label" htmlFor="form3Examplea3">Locality / Area </label>
-                                                                <p className='text-danger p-2 m-2' >{Error.address2}</p>
+                                                                <strong className='text-danger p-2 m-2 cap' >{Error.address2}</strong>
                                                             </div>
                                                         </div>
 
@@ -395,7 +406,7 @@ const Applyloan = () => {
                                                                     <input type="text" name='pincode' id="form3Examplea4"
                                                                         className="form-control form-control-lg" onChangeCapture={checkPincode}/>
                                                                     <label className="form-label" htmlFor="form3Examplea4">Zip Code</label>
-                                                                    <p className='text-danger p-2 m-2' >{Error.pincode}</p>
+                                                                    <p><strong className='text-danger p-2 m-2 cap' >{Error.pincode}</strong></p>
                                                                 </div>
 
                                                             </div>
@@ -403,9 +414,9 @@ const Applyloan = () => {
 
                                                                 <div className="form-outline form-white">
                                                                     <input name='place' type="text" id="form3Examplea5"
-                                                                        className="form-control form-control-lg" onChangeCapture={checkPlace}/>
+                                                                        className="form-control form-control-lg cap" onChangeCapture={checkPlace}/>
                                                                     <label className="form-label" htmlFor="form3Examplea5">Place</label>
-                                                                    <p className='text-danger p-2 m-2' >{Error.place}</p>
+                                                                    <p><strong className='text-danger p-2 m-2 cap' >{Error.state}</strong></p>
                                                                 </div>
 
                                                             </div>
@@ -414,17 +425,17 @@ const Applyloan = () => {
                                                         <div className="mb-4 pb-2">
                                                             <div className="form-outline form-white">
                                                                 <input name='state' type="text" id="form3Examplea6"
-                                                                    className="form-control form-control-lg" onChangeCapture={checkState}/>
+                                                                    className="form-control form-control-lg cap" onChangeCapture={checkState}/>
                                                                 <label className="form-label" htmlFor="form3Examplea6">State</label>
-                                                                <p className='text-danger p-2 m-2' >{Error.state}</p>
+                                                                <strong className='text-danger p-2 m-2 cap' >{Error.state}</strong>
                                                             </div>
                                                         </div>
                                                         <div className="mb-4 pb-2">
                                                             <div className="form-outline form-white">
                                                                 <input name='country' type="text" id="form3Examplea6"
-                                                                    className="form-control form-control-lg" onChangeCapture={checkCountry}/>
+                                                                    className="form-control form-control-lg cap" onChangeCapture={checkCountry}/>
                                                                 <label className="form-label" htmlFor="form3Examplea6">Country</label>
-                                                                <p className='text-danger p-2 m-2' >{Error.country}</p>
+                                                                <strong className='text-danger p-2 m-2 cap' >{Error.country}</strong>
                                                             </div>
                                                         </div>
 
@@ -472,6 +483,3 @@ const Applyloan = () => {
 }
 
 export default Applyloan
-
-
-
