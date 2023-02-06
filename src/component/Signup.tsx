@@ -10,22 +10,17 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const Signup = () => {
+    const navigate = useNavigate();
     const fname = FormHoook("");
     const lname = FormHoook("");
     const email = FormHoook("");
     const mobile = FormHoook("");
     const password = FormHoook("");
     const cpassword = FormHoook("");
-    const navigate = useNavigate();
     const emailregex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i;
     const passregex = /^[A-Za-z0-9!@#$%^&*()_]{6,16}$/i;
-    const phoneregex = /^[0-9]{10}$/i;
+    const phoneregex = /^[1-9]{1}[0-9]{9}$/i;
     const nameregex = /^[a-zA-Z]{3,16}$/i;
-    const [phonecheck, setMob] = useState('')
-    const [emailcheck, setEmail] = useState('');
-    const [namecheck, setName] = useState('');
-    const [passcheck, setPass] = useState('');
-    const [cpasscheck, setcPass] = useState('');
     const [emailerror, setErroremail] = useState('');
     const [nameerror, setErroname] = useState('');
     const [passerror, setErrorpass] = useState('');
@@ -34,7 +29,7 @@ const Signup = () => {
 
 
     const checkEmail = (e: any) => {
-        setEmail(e.currentTarget.value);
+
         if (emailregex.test(e.currentTarget.value) === false) {
             setErroremail("Please Enter Valid Email Address");
             return false;
@@ -46,7 +41,6 @@ const Signup = () => {
         }
     }
     const checkName = (e: any) => {
-        setName(e.currentTarget.value);
         if (nameregex.test(e.currentTarget.value) === false) {
             setErroname("Please Enter Valid Name");
             return false;
@@ -58,7 +52,6 @@ const Signup = () => {
         }
     }
     const checkPass = (e: any) => {
-        setPass(e.currentTarget.value);
         if (passregex.test(e.currentTarget.value) === false) {
             setErrorpass("Please Enter Valid Password");
             return false;
@@ -70,7 +63,6 @@ const Signup = () => {
         }
     }
     const checkcPass = (e: any) => {
-        setcPass(e.currentTarget.value);
         if (e.currentTarget.value !== password.value) {
             setErrorcpass("Password Must be Same");
         }
@@ -80,7 +72,6 @@ const Signup = () => {
         }
     }
     const checkMob = (e: any) => {
-        setMob(e.currentTarget.value);
         if (phoneregex.test(e.currentTarget.value) === false) {
             setErrormob("Please Enter Valid Mobile Number");
             return false;
@@ -123,10 +114,10 @@ const Signup = () => {
                 else {
                     toast("Account Already Created");
                 }
-            }
+            }   
             else {
                 // console.error("hi")
-                toast("Invalid Data");
+                toast("Invalid");
             }
 
         }

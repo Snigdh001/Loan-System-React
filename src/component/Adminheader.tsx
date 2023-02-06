@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import '../../node_modules/bootstrap/dist/js/bootstrap.bundle'
+import '../../node_modules/bootstrap/dist/js/bootstrap.bundle.js'
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { UserDetailResponse, getDetailsApi } from '../servies/User';
@@ -41,6 +41,7 @@ const Adminheader = () => {
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="true" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
+                
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
                         <li className="nav-item active">
@@ -52,9 +53,6 @@ const Adminheader = () => {
                         <li className="nav-item">
                             <span className="nav-link" onClick={myProfile}>My Profile</span>
                         </li>
-
-
-                        {/* onClick={myProfile} */}
                         <li className="nav-item">
                             <Link className="nav-link" to="/login" onClick={logOut} >LogOut</Link>
                         </li>

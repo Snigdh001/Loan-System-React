@@ -7,35 +7,188 @@ import { toast } from 'react-toastify'
 import { response } from '../servies/admin'
 
 
-
+interface er {pan:"",aadhar:"",income:"",loanAmt:"",duration:"",address1:"",address2:"",pincode:"",place:"",state:"",country:""}
 
 const Applyloan = () => {
     const navigate = useNavigate();
     const [userDetails, setUserDetails] = useState<UserDetailResponse>()
-
-
-
+    const panregex = /^[A-Z0-9]{10}$/;
+    const nameregex = /^[a-zA-Z]{3,16}$/i;
+    const [Error, setError] = useState({pan:"",aadhar:"",income:"",loanAmt:"",duration:"",address1:"",address2:"",pincode:"",place:"",state:"",country:""});
     useEffect(() => {
-
+       
         let userLogged = localStorage.getItem("Session") as string;
         let applicantId = JSON.parse(userLogged).id
         const data = {
             userId: applicantId
-        }
+        }  
 
 
         let result = getDetailsApi(data).then(Res => setUserDetails(Res.data[0])).catch(err => console.log(err));
 
-
+        console.log(Error.income)
     }, [])
+    
+    
+    
+    const checkPan = (e: any) => {
+        if (panregex.test(e.currentTarget.value) === false) {
+            setError((prevState) => { return { ...prevState, "pan": "please enter valid Pan" } })
+            return false;
+        }
+        else {
+            setError((prevState) => { return { ...prevState, "pan": "" } })
+            return true;
+        }
+    }
+    const checkAadhar = (e: any) => {
+        if (nameregex.test(e.currentTarget.value) === false) {
+            setError((prevState) => { return { ...prevState, "aadhar": "please enter valid Pan" } })
+            return false;
+                }
+        else {
+            setError((prevState) => { return { ...prevState, "aadhar": "" } })
+            return true;
+        }
+    }
+    const checkIncome = (e: any) => {
+        if (nameregex.test(e.currentTarget.value) === false) {
+            setError((prevState) => { return { ...prevState, "income": "please enter valid Pan" } })
+            return false;
+        }
+        else {
+            setError((prevState) => { return { ...prevState, "income": "" } })
+            return true;
+        }
+    }
+    const checkLoanAmt= (e: any) => {
+        if (nameregex.test(e.currentTarget.value) === false) {
+            setError((prevState) => { return { ...prevState, "loanAmt": "please enter valid Pan" } })
+            return false;
+        }
+        else {
+            setError((prevState) => { return { ...prevState, "loanAmt": "" } })
+            return true;
+        }
+    }
+    const checkDuration = (e: any) => {
+        if (nameregex.test(e.currentTarget.value) === false) {
+            setError((prevState) => { return { ...prevState, "duration": "please enter valid Pan" } })
+            return false;
+        }
+        else {
+            setError((prevState) => { return { ...prevState, "duration": "" } })
+            return true;
+        }
+    }
+    const checkAddress1 = (e: any) => {
+        if (nameregex.test(e.currentTarget.value) === false) {
+            setError((prevState) => { return { ...prevState, "address1": "please enter valid Pan" } })
+            return false;
+        }
+        else {
+            setError((prevState) => { return { ...prevState, "address1": "" } })
+            return true;
+        }
+    }
+    const checkAddress2 = (e: any) => {
+        if (nameregex.test(e.currentTarget.value) === false) {
+            setError((prevState) => { return { ...prevState, "address2": "please enter valid Pan" } })
+            return false;
+        }
+        else {
+            setError((prevState) => { return { ...prevState, "address2": "" } })
+            return true;
+        }
+    }
+    const checkPincode = (e: any) => {
+        if (nameregex.test(e.currentTarget.value) === false) {
+            setError((prevState) => { return { ...prevState, "pincode": "please enter valid Pan" } })
+            return false;
+        }
+        else {
+            setError((prevState) => { return { ...prevState, "pincode": "" } })
+            return true;
+        }
+    }
+    const checkPlace = (e: any) => {
+        if (nameregex.test(e.currentTarget.value) === false) {
+            setError((prevState) => { return { ...prevState, "place": "please enter valid Pan" } })
+            return false;
+        }
+        else {
+            setError((prevState) => { return { ...prevState, "place": "" } })
+            return true;
+        }
+    }
+    const checkState = (e: any) => {
+        if (nameregex.test(e.currentTarget.value) === false) {
+            setError((prevState) => { return { ...prevState, "state": "please enter valid Pan" } })
+            return false;
+        }
+        else {
+            setError((prevState) => { return { ...prevState, "state": "" } })
+            return true;
+        }
+    }
+    const checkCountry = (e: any) => {
+        if (nameregex.test(e.currentTarget.value) === false) {
+            setError((prevState) => { return { ...prevState, "country": "please enter valid Pan" } })
+            return false;
+        }
+        else {
+            setError((prevState) => { return { ...prevState, "country": "" } })
+            return true;
+        }
+    }
+    
+
+
+    
 
     const applyReq = async (e: any) => {
         e.preventDefault()
+        
         let userLogged = localStorage.getItem("Session") as string;
-        // console.log(userLogged);
         let applicantId = JSON.parse(userLogged).id
         const formdata = new FormData(e.currentTarget)
-        const data = {
+        if (formdata.get('aadhar')== "")
+            setError((prevState) => { return { ...prevState, "aadhar": "Field is required" } })
+
+        if (formdata.get('pan')== "")
+        setError((prevState) => { return { ...prevState, "pan": "Field is required" } })
+
+        if (formdata.get('income')== "")
+        setError((prevState) => { return { ...prevState, "income": "Field is required" } })
+
+        if (formdata.get('loanAmt')== "")
+        setError((prevState) => { return { ...prevState, "loanAmt": "Field is required" } })
+
+        if (formdata.get('duration')== "")
+        setError((prevState) => { return { ...prevState, "duration": "Field is required" } })
+        if (formdata.get('address1')== "")
+        setError((prevState) => { return { ...prevState, "address1": "Field is required" } })
+
+        if (formdata.get('address2')== "")
+        setError((prevState) => { return { ...prevState, "address2": "Field is required" } })
+
+        if (formdata.get('pincode')== "")
+        setError((prevState) => { return { ...prevState, "pincode": "Field is required" } })
+
+        if (formdata.get('place')== "")
+        setError((prevState) => { return { ...prevState, "place": "Field is required" } })
+
+        if (formdata.get('state')== "")
+        setError((prevState) => { return { ...prevState, "state": "Field is required" } })
+
+        if (formdata.get('country')== "")
+        setError((prevState) => { return { ...prevState, "country": "Field is required" } })
+
+        // console.log(Error.income)
+        // console.log()
+    //     if({checkPan} && {checkAadhar} && {checkIncome}&& {checkLoanAmt}&& {checkDuration}&& {checkAddress1}&& {checkAddress2}&& {checkPincode}&& {checkPlace} && {checkState} && {checkCountry}  )
+    //     {
+            const data = {
             fname: formdata.get('fname'),
             lname: formdata.get('lname'),
             email: formdata.get('email'),
@@ -54,30 +207,29 @@ const Applyloan = () => {
             country: formdata.get('country'),
             mobile: formdata.get('mobile'),
             userid: applicantId,
-        }
+            }
+        
 
+        console.log(data)
+        
+    //     // let result = await loanapply(data)
+    //     // if (result.data.success === 'true') {
 
-        // console.log(data)
-
-        let result = await loanapply(data)
-        if (result.data.success === 'true') {
-
-            navigate('/userdashboard');
-            toast.success("Successfully Applied")
-
-
-        }
-        else if (result.data.success === 'false') {
-            toast.error(result.data.messages)
-        }
-        else {
-            console.error(result.data)
-        }
+    //     //     navigate('/userdashboard');
+    //     //     toast.success("Successfully Applied")
+    //     // }
+    //     // else if (result.data.success === 'false') {
+    //         //     toast.error(result.data.messages)
+    //     // }
+    //     // else {
+    //     //     console.error(result.data)
+    //     // }
+    // }
 
     }
-
-
-
+    
+    
+    
     return (
         <>
             <UserHeader />
@@ -142,7 +294,8 @@ const Applyloan = () => {
                                                                         <label className="form-label" htmlFor="form3Examplev5">Aadhar
                                                                             Number</label>
                                                                         <input name='aadhar' type="text" id="form3Examplev5"
-                                                                            className="form-control form-control-lg" />
+                                                                            className="form-control form-control-lg" onChangeCapture={checkAadhar} />
+                                                                            <p className='text-danger p-2 m-2' >{Error.aadhar}</p>
                                                                     </div>
                                                                 </div>
 
@@ -152,8 +305,9 @@ const Applyloan = () => {
                                                                     <div className="form-outline">
                                                                         <label className="form-label" htmlFor="form3Examplev5">Pan
                                                                             Number</label>
-                                                                        <input name='pan' type="text" id="form3Examplev5"
-                                                                            className="form-control form-control-lg" />
+                                                                        <input name='pan' type="text" id="form3Examplev5" 
+                                                                            className="form-control form-control-lg" onChangeCapture={checkPan}/>
+                                                                            <p className='text-danger p-2 m-2' >{Error.pan}</p>
                                                                     </div>
                                                                 </div>
 
@@ -179,7 +333,8 @@ const Applyloan = () => {
                                                                     <div className="form-outline">
                                                                         <label className="form-label" htmlFor="form3Examplev5">Annual Income</label>
                                                                         <input name='income' type="text" id="form3Examplev5"
-                                                                            className="form-control form-control-lg" />
+                                                                            className="form-control form-control-lg" onChangeCapture={checkIncome}/>
+                                                                            <p className='text-danger p-2 m-2' >{Error.income}</p>
                                                                     </div>
                                                                 </div>
 
@@ -192,7 +347,8 @@ const Applyloan = () => {
                                                                     <div className="form-outline">
                                                                         <label className="form-label" htmlFor="form3Examplev5">Loan Amount</label>
                                                                         <input name='loanAmt' type="text" id="form3Examplev5"
-                                                                            className="form-control form-control-lg" />
+                                                                            className="form-control form-control-lg" onChangeCapture={checkLoanAmt}/>
+                                                                            <p className='text-danger p-2 m-2' >{Error.loanAmt}</p>
                                                                     </div>
                                                                 </div>
 
@@ -202,7 +358,8 @@ const Applyloan = () => {
                                                                     <div className="form-outline">
                                                                         <label className="form-label" htmlFor="form3Examplev5">Duration (In month)</label>
                                                                         <input name='duration' type="text" id="form3Examplev5"
-                                                                            className="form-control form-control-lg" />
+                                                                            className="form-control form-control-lg" onChangeCapture={checkDuration}/>
+                                                                            <p className='text-danger p-2 m-2' >{Error.duration}</p>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -216,16 +373,18 @@ const Applyloan = () => {
                                                         <div className="mb-4 pb-2">
                                                             <div className="form-outline form-white">
                                                                 <input name='address1' type="text" id="form3Examplea2"
-                                                                    className="form-control form-control-lg" />
+                                                                    className="form-control form-control-lg" onChangeCapture={checkAddress1}/>
                                                                 <label className="form-label" htmlFor="form3Examplea2">Flat no. / House No. + Street</label>
+                                                                <p className='text-danger p-2 m-2' >{Error.address1}</p>
                                                             </div>
                                                         </div>
 
                                                         <div className="mb-4 pb-2">
                                                             <div className="form-outline form-white">
                                                                 <input type="text" name='address2' id="form3Examplea3"
-                                                                    className="form-control form-control-lg" />
+                                                                    className="form-control form-control-lg" onChangeCapture={checkAddress2}/>
                                                                 <label className="form-label" htmlFor="form3Examplea3">Locality / Area </label>
+                                                                <p className='text-danger p-2 m-2' >{Error.address2}</p>
                                                             </div>
                                                         </div>
 
@@ -234,8 +393,9 @@ const Applyloan = () => {
 
                                                                 <div className="form-outline form-white">
                                                                     <input type="text" name='pincode' id="form3Examplea4"
-                                                                        className="form-control form-control-lg" />
+                                                                        className="form-control form-control-lg" onChangeCapture={checkPincode}/>
                                                                     <label className="form-label" htmlFor="form3Examplea4">Zip Code</label>
+                                                                    <p className='text-danger p-2 m-2' >{Error.pincode}</p>
                                                                 </div>
 
                                                             </div>
@@ -243,8 +403,9 @@ const Applyloan = () => {
 
                                                                 <div className="form-outline form-white">
                                                                     <input name='place' type="text" id="form3Examplea5"
-                                                                        className="form-control form-control-lg" />
+                                                                        className="form-control form-control-lg" onChangeCapture={checkPlace}/>
                                                                     <label className="form-label" htmlFor="form3Examplea5">Place</label>
+                                                                    <p className='text-danger p-2 m-2' >{Error.place}</p>
                                                                 </div>
 
                                                             </div>
@@ -253,15 +414,17 @@ const Applyloan = () => {
                                                         <div className="mb-4 pb-2">
                                                             <div className="form-outline form-white">
                                                                 <input name='state' type="text" id="form3Examplea6"
-                                                                    className="form-control form-control-lg" />
+                                                                    className="form-control form-control-lg" onChangeCapture={checkState}/>
                                                                 <label className="form-label" htmlFor="form3Examplea6">State</label>
+                                                                <p className='text-danger p-2 m-2' >{Error.state}</p>
                                                             </div>
                                                         </div>
                                                         <div className="mb-4 pb-2">
                                                             <div className="form-outline form-white">
                                                                 <input name='country' type="text" id="form3Examplea6"
-                                                                    className="form-control form-control-lg" />
+                                                                    className="form-control form-control-lg" onChangeCapture={checkCountry}/>
                                                                 <label className="form-label" htmlFor="form3Examplea6">Country</label>
+                                                                <p className='text-danger p-2 m-2' >{Error.country}</p>
                                                             </div>
                                                         </div>
 
