@@ -7,7 +7,7 @@ import './css/admindashboard.css'
 import '../../node_modules/w3-css/w3.css'
 import FormHoook from '../Hooks/Form';
 import { toast } from 'react-toastify';
-import { Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap'
+import { Col, Label, Modal, ModalBody, ModalHeader, Row } from 'reactstrap'
 import { updateLanguageServiceSourceFile } from 'typescript';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
@@ -24,24 +24,65 @@ const Admindashboard = () => {
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
     const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(page);
+    const [totalPages, setTotalPages] = useState(0);
+    const [emailerror, setErroremail] = useState('');
+    const [nameerror, setErroname] = useState('');
+    const [moberror, setErrormob] = useState('');
+    const emailregex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i;
+    const phoneregex = /^[1-9]{1}[0-9]{9}$/i;
+    const nameregex = /^[a-zA-Z]{3,16}$/i;
     const navigate = useNavigate();
+    
+
 
     useEffect(() => {
         let result: any = 0;
-        result = alluser(page,pageSize).then(Res => {
+        result = alluser(page, pageSize).then(Res => {
             setUsers(Res.data.data);
             setTotalPages(Res.data.totalpages)
         }).catch(err => console.log(err));
         // console.log(result);
 
-    }, [page ,pageSize]  )
+    }, [page, pageSize])
 
-    const handlePageChange=(index:number)=>{
-        setPage(index);
-       
+    const handlePageChange = (index: number) => {
+        setPage(index);}
+    
+        const checkEmail = (e: any) => {
 
-    }
+            if (emailregex.test(e.currentTarget.value) === false) {
+                setErroremail("Please Enter Valid Email Address i.e abc@zyx.com");
+                return false;
+                
+            }
+            else {
+                setErroremail("")
+    
+                return true;
+            }
+        }
+        const checkName = (e: any) => {
+            if (nameregex.test(e.currentTarget.value) === false) {
+                setErroname("Please Enter Valid Name");
+                return false;
+            }
+            else {
+                setErroname("")
+    
+                return true;
+            }
+        }
+        
+        const checkMob = (e: any) => {
+            if (phoneregex.test(e.currentTarget.value) === false) {
+                setErrormob("Please Enter Valid Mobile Number");
+                return false;
+            }
+            else {
+                setErrormob("")
+                return true;
+            }
+        }
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 90 },
         {
@@ -120,7 +161,7 @@ const Admindashboard = () => {
 
         setIsDeleteOpen(false)
         let result = await deleteuser(optid).catch(err => console.log(err));
-        alluser(page,pageSize).then(Res => setUsers(Res.data)).catch(err => console.log(err));
+        alluser(page, pageSize).then(Res => {setUsers(Res.data.data);setTotalPages(Res.data.totalpages)}).catch(err => console.log(err));
         toast("User Deleted Sucessfully");
 
     }
@@ -165,7 +206,7 @@ const Admindashboard = () => {
         nameF.resetvaule();
         emailF.resetvaule();
         mobF.resetvaule();
-        alluser(page,pageSize).then(Res => setUsers(Res.data)).catch(err => console.log(err));
+        alluser(page, pageSize).then(Res => {setUsers(Res.data.data);setTotalPages(Res.data.totalpages)}).catch(err => console.log(err));
 
     }
 
@@ -181,8 +222,8 @@ const Admindashboard = () => {
                             <form action="" id='filterform' onSubmit={submitForm} method="get">
                                 <div className="box">
                                     <label htmlFor="emailf">Email</label>
-                                    <input type="text" name="emailf" {...emailF} placeholder='Email' id="emailf" />
-
+                                    <input type="text" name="emailf"  {...emailF} placeholder='Email' id="emailf" />
+                                    
                                     <label htmlFor="namef">Name</label>
                                     <input type="text" name="namef" {...nameF} placeholder='Name' id="namef" />
 
@@ -199,10 +240,10 @@ const Admindashboard = () => {
                             rows={users ? users : []}
                             columns={columns}
                             pageSize={pageSize}
-                            onPageSizeChange={(newPageSize) => {setPageSize(newPageSize);setPage(1)  }}
+                            onPageSizeChange={(newPageSize) => { setPageSize(newPageSize); setPage(1) }}
                             rowsPerPageOptions={[5, 10, 20, 40]}
                             checkboxSelection={true}
-                            
+
                             disableSelectionOnClick
                             components={{ Toolbar: GridToolbar }}
                             experimentalFeatures={{ newEditingApi: true }}
@@ -210,7 +251,7 @@ const Admindashboard = () => {
                         <div className="m-2">
                             {Array.from({ length: totalPages }, (_, index) => (
 
-                                <button key={index} className="ms-2 btn btn-secondary" onClick={() => setPage(index+1)}>
+                                <button key={index} className="ms-2 btn btn-secondary" onClick={() => setPage(index + 1)}>
                                     {index + 1}
                                 </button>
                             ))}
@@ -230,6 +271,9 @@ const Admindashboard = () => {
                                 // edit(editId)
                                 evt.preventDefault();
                                 let data = new FormData(evt.currentTarget);
+                                if({checkName} &&{checkEmail} &&{checkMob}){
+
+                                
                                 let formData = {
 
                                     "fname": data.get("fname"),
@@ -237,46 +281,44 @@ const Admindashboard = () => {
                                     "email": data.get("email"),
                                     "mobile": data.get("mobile"),
                                 };
+                                // console.log(formData);
                                 let res = await updateUser(data, obj.id);
-
+                                // console.log(res)
                                 if (res.data.messages.success === 'true') {
                                     setIsEditOpen(false)
-                                    alluser(page,pageSize).then(Res => setUsers(Res.data)).catch(err => console.log(err));
                                     toast.success("Data Updated Successfully")
+                                    alluser(page, pageSize).then(Res => {setUsers(Res.data.data);setTotalPages(Res.data.totalpages)}).catch(err => console.log(err));
+                                    
+                                    
                                 }
                                 else {
                                     setIsEditOpen(false)
                                     toast.success("Duplicate Data");
                                 }
+                                }
+                                
+
                             }}>
                                 <Row className='mt-2'>
-                                    <Col>Name
-                                    </Col>
-                                    <Col><input type="text" name="fname" className='form-control' defaultValue={obj.fname} /></Col>
-
+                                    <Label>First Name</Label>
+                                    <Col><input type="text" name="fname" className='form-control' onChangeCapture={checkName}defaultValue={obj.fname} /></Col>
+                                    <p className='text-danger p-2 m-2'>{nameerror}</p>
                                 </Row>
                                 <Row className='mt-2'>
-                                    <Col>Name
-                                    </Col>
+                                    <Label>Last Name</Label>
                                     <Col><input type="text" name="lname" className='form-control' defaultValue={obj.lname} /></Col>
+                                    <p className='p-2 m-2'></p>
+                                </Row>
+                                <Row className='mt-2'>
+                                    <Label>Email</Label>
+                                    <Col><input type="text" name="email" className='form-control' onChangeCapture={checkEmail} defaultValue={obj.email} /></Col>
+                                    <p className='text-danger p-2 m-2'>{emailerror}</p>
 
                                 </Row>
                                 <Row className='mt-2'>
-                                    <Col>Email
-                                    </Col>
-                                    <Col><input type="text"
-                                        name="email"
-                                        className='form-control' defaultValue={obj.email} /></Col>
-
-                                </Row>
-                                <Row className='mt-2'>
-                                    <Col>Mobile
-                                    </Col>
-                                    <Col><input type="text"
-                                        name="mobile"
-                                        className='form-control'
-                                        defaultValue={obj.mobile}
-                                    /></Col>
+                                    <Label>Mobile</Label>
+                                    <Col><input type="text" name="mobile" className='form-control' onChangeCapture={checkMob}defaultValue={obj.mobile} /></Col>
+                                    <p className='text-danger p-2 m-2'>{moberror}</p>
 
                                 </Row>
 

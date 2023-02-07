@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import '../component/css/registration.css'
 import FormHoook from '../Hooks/Form'
-import { Await } from 'react-router-dom';
 import { signup } from '../servies/Auth';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -26,17 +25,20 @@ const Signup = () => {
     const [passerror, setErrorpass] = useState('');
     const [cpasserror, setErrorcpass] = useState('');
     const [moberror, setErrormob] = useState('');
+    const [confirm, setConfirm] = useState({ fn: false, ln: false, email: false, mob: false, pass: false, cpass: false});
 
 
     const checkEmail = (e: any) => {
 
         if (emailregex.test(e.currentTarget.value) === false) {
-            setErroremail("Please Enter Valid Email Address");
+            setErroremail("Please Enter Valid Email Address i.e abc@zyx.com");
+            
+                
             return false;
         }
         else {
             setErroremail("")
-
+            setConfirm((prevState) => { return { ...prevState, "email": true } })
             return true;
         }
     }
@@ -47,7 +49,7 @@ const Signup = () => {
         }
         else {
             setErroname("")
-
+            setConfirm((prevState) => { return { ...prevState, "fn": true } })
             return true;
         }
     }
@@ -58,7 +60,7 @@ const Signup = () => {
         }
         else {
             setErrorpass("")
-
+            setConfirm((prevState) => { return { ...prevState, "pass": true } })
             return true;
         }
     }
@@ -68,6 +70,8 @@ const Signup = () => {
         }
         else {
             setErrorcpass("")
+            setConfirm((prevState) => { return { ...prevState, "cpass": true } })
+            return true;
 
         }
     }
@@ -78,6 +82,7 @@ const Signup = () => {
         }
         else {
             setErrormob("")
+            setConfirm((prevState) => { return { ...prevState, "mob": true } })
             return true;
         }
     }
@@ -85,42 +90,39 @@ const Signup = () => {
 
     const submitHander = async (e: any) => {
         e.preventDefault()
-        {
-            if (fname.value == "")
-                setErroname("Field is required");
-            if (email.value == "")
-                setErroremail("Field is required");
-            if (mobile.value == "")
-                setErrormob("Field is required");
-            if (password.value == "")
-                setErrorpass("Field is required");
-            if (cpassword.value == "")
-                setErrorcpass("Field is required");
-            // console.error(vn,vp,vemail,vmob,vcp)
-            if (password.value === cpassword.value && password.value.length >= 6 && { checkName } && { checkEmail } && { checkMob } && { checkPass }) {
-                const data = {
-                    fname: fname.value,
-                    lname: lname.value,
-                    email: email.value,
-                    mobile: mobile.value,
-                    password: password.value,
-                };
-                console.log(data)
-                const result = await signup(data);
-                if (result.data.messages.success === "true") {
-                    toast("Account Created Sucessfully");
-                    navigate('/login');
-                }
-                else {
-                    toast("Account Already Created");
-                }
-            }   
-            else {
-                // console.error("hi")
-                toast("Invalid");
+        if (fname.value === "")
+            setErroname("Field is required");
+        if (email.value === "")
+            setErroremail("Field is required");
+        if (mobile.value === "")
+            setErrormob("Field is required");
+        if (password.value === "")
+            setErrorpass("Field is required");
+        if (cpassword.value === "")
+            setErrorcpass("Field is required");
+        console.log(confirm.fn)
+        if (password.value === cpassword.value && password.value.length >= 6 && confirm.fn &&confirm.email &&confirm.mob &&confirm.pass  ) {
+            const data = {
+                fname: fname.value,
+                lname: lname.value,
+                email: email.value,
+                mobile: mobile.value,
+                password: password.value,
+            };
+            const result = await signup(data);
+            if (result.data.messages.success === "true") {
+                toast("Account Created Sucessfully");
+                navigate('/login');
             }
-
+            else {
+                toast("Account Already Created");
+            }
         }
+        else {
+            toast("Invalid");
+        }
+
+
 
     }
 
@@ -129,7 +131,7 @@ const Signup = () => {
         <div>
             <ToastContainer />
             <div className="apply_loan">
-                <section style={{height:"88vh"}} className="h-100 h-custom gradient-custom-2">
+                <section style={{ height: "88vh" }} className="h-100 h-custom gradient-custom-2">
                     <div className="container py-5 h-100">
                         <div className="row d-flex justify-content-center align-items-center h-100">
                             <div className="col-12">

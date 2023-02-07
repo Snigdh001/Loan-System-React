@@ -1,14 +1,13 @@
-import React, { HtmlHTMLAttributes, useState } from "react";
 import axios from "axios";
 
 
 interface response {
   messages: {
-    success: string|null,
-    message:string|null,
-    role:string|null,
-    id:string|null,
-    authorization:string|null,
+    success: string,
+    message:string,
+    role:string,
+    id:string,
+    authorization:string,
   }
 }
 

@@ -17,19 +17,7 @@ import MyLoanRequest from './component/MyLoanRequest';
 
 
 function App() {
-  let userLogged;
-  let role;
-  let allowed;
-
-  useEffect(() => {
-    function checkUserData() {
-      userLogged = localStorage.getItem("Session") as string;
-      // console.log(userLogged);
-      role = JSON.parse(userLogged).role
-      allowed = JSON.parse(userLogged).isLoggedin
-    }
-
-  }, []);
+  
 
   return (
     <div>

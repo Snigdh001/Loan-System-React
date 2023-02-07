@@ -9,6 +9,7 @@ import { Modal, ModalHeader, ModalBody, Row, Col } from 'reactstrap';
 import { stringify } from 'querystring';
 import { loanAction } from '../servies/User';
 import { wait } from '@testing-library/user-event/dist/utils';
+import './css/loan_registration.css'
 
 
 
@@ -159,52 +160,52 @@ const LoanApplicationList = () => {
             </ModalHeader>
             <form action="" onSubmit={loanact} method="post" >
               <ModalBody>
-                <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Applcation ID : {usersDetails.id}</Col>
-                  <Col style={{ textTransform: "uppercase" }} >User ID : {usersDetails.userid}</Col>
+                <Row className='mt-3 cap'>
+                  <Col>Applcation ID : {usersDetails.id}</Col>
+                  <Col>User ID : {usersDetails.userid}</Col>
                 </Row>
-                <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Name : {usersDetails.fname + ' ' + usersDetails.lname}</Col>
-                  <Col style={{ textTransform: "uppercase" }} >Email : {usersDetails.email}</Col>
+                <Row className='mt-3 cap'>
+                  <Col  >Name : {usersDetails.fname + ' ' + usersDetails.lname}</Col>
+                  <Col  >Email : {usersDetails.email}</Col>
                 </Row>
-                <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Gender : {usersDetails.gender}</Col>
-                  <Col style={{ textTransform: "uppercase" }} >Mobile : {usersDetails.mobile}</Col>
+                <Row className='mt-3 cap'>
+                  <Col  >Gender : {usersDetails.gender}</Col>
+                  <Col  >Mobile : {usersDetails.mobile}</Col>
                 </Row>
-                <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Aadhar No. : {usersDetails.aadhar}</Col>
-                  <Col style={{ textTransform: "uppercase" }} >Pan Number : {usersDetails.pan}</Col>
+                <Row className='mt-3 cap'>
+                  <Col  >Aadhar No. : {usersDetails.aadhar}</Col>
+                  <Col  >Pan Number : {usersDetails.pan}</Col>
                 </Row>
-                <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Profession : {usersDetails.profession}</Col>
-                  <Col style={{ textTransform: "uppercase" }} >Income : {usersDetails.income}</Col>
+                <Row className='mt-3 cap'>
+                  <Col  >Profession : {usersDetails.profession}</Col>
+                  <Col  >Income : {usersDetails.income}</Col>
                 </Row>
-                <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Loan Amount : {usersDetails.loanAmt}</Col>
-                  <Col style={{ textTransform: "uppercase" }} >Duration : {usersDetails.duration + " Months"}</Col>
+                <Row className='mt-3 cap'>
+                  <Col  >Loan Amount : {usersDetails.loanAmt}</Col>
+                  <Col  >Duration : {usersDetails.duration + " Months"}</Col>
                 </Row>
-                <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Address : {usersDetails.address1 + ', ' + usersDetails.address2 + ', ' + usersDetails.place}</Col>
+                <Row className='mt-3 cap'>
+                  <Col  >Address : {usersDetails.address1 + ', ' + usersDetails.address2 + ', ' + usersDetails.place}</Col>
                 </Row>
-                <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Place : {usersDetails.place}</Col>
-                  <Col style={{ textTransform: "uppercase" }} >Pincode : {usersDetails.pincode}</Col>
+                <Row className='mt-3 cap'>
+                  <Col  >Place : {usersDetails.place}</Col>
+                  <Col  >Pincode : {usersDetails.pincode}</Col>
                 </Row>
 
-                <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Country : {usersDetails.country}</Col>
-                  <Col style={{ textTransform: "uppercase" }} >State : {usersDetails.state}</Col>
+                <Row className='mt-3 cap'>
+                  <Col>Country : {usersDetails.country}</Col>
+                  <Col>State : {usersDetails.state}</Col>
                   
                 </Row>
-                <Row className='mt-4'>
-                  <Col style={{ textTransform: "uppercase" }} >Status : <select name='status' defaultValue={usersDetails.status} style={{marginLeft:"10px", width: "200px" }} className="select form-control-lg">
+                <Row className='mt-4 cap'>
+                  <Col  >Status : <select name='status' defaultValue={usersDetails.status} style={{marginLeft:"10px", width: "200px" }} className="select form-control-lg">
                     <option value="pending">Pending</option>
                     <option value="approved">Approved</option>
                     <option value="rejected">Rejected</option>
                   </select> </Col>
                 </Row>
                 <Row className='mt-3'>
-                  <Col style={{ textTransform: "uppercase" }} >Remark :</Col>
+                  <Col  >Remark :</Col>
                 </Row>
                 <Row className='mt-3'>
                   <textarea style={{ textTransform: "capitalize", borderRadius: "15px",marginLeft:"5%",padding:"2%",width:"90%"}}  defaultValue={usersDetails.remark} name="remark" id="remark" cols={10} rows={5}></textarea>

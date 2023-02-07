@@ -65,7 +65,7 @@ const alluser = async (page:number,record:number) =>{
   const updateUser=async (data:object,id:string)=>{
 
 
-    console.log("editservice");
+    // console.log("editservice");
 
     
     return axios.post<editresponse>(`http://localhost/snigdh_ci4/Api/updateuser/${id}`,data);
