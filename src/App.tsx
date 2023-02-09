@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from './component/Login';
 import Signup from './component/Signup';
@@ -18,7 +17,6 @@ import MyLoanRequest from './component/MyLoanRequest';
 
 function App() {
   
-
   return (
     <div>
       <BrowserRouter>

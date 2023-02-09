@@ -1,31 +1,12 @@
 import React, { HtmlHTMLAttributes, useState } from "react";
 import axios from "axios";
 import { Session } from "inspector";
+import { baseurl } from "./User";
+import { editresponse, optresponse, response } from "./Interface";
 
-export interface response {
 
-  
-  id: string,
-fname: string,
-lname:string,
-email:string,
-mobile:string,
-role:string,
 
-}
-export interface optresponse {
-  id: string|null,
-message:string|null,
-success:string|null,
-}
-export interface editresponse  {
-  status : number ,
-  error :string|null,
-  messages : {
-      success :string,
-      message :string
-}
-}
+
  const getToken=()=>{
   let userLogged = localStorage.getItem("Session") as string;
   let token=JSON.parse(userLogged).authorization;
@@ -38,7 +19,7 @@ export interface editresponse  {
 
 const alluser = async (page:number,record:number) =>{
   
-      return axios.get(`http://localhost/snigdh_ci4/Api/allusers?page=${page}&recordlimit=${record}`,{headers:{
+      return axios.get(`${baseurl}allusers?page=${page}&recordlimit=${record}`,{headers:{
         'Authorization': getToken()
       }});
     }
@@ -53,13 +34,13 @@ const alluser = async (page:number,record:number) =>{
     }
     query = query.substring(0,query.length-1);    
     // return query;  
-  return axios.get<response[]>("http://localhost/snigdh_ci4/Api/filters?"+query);
+  return axios.get<response[]>(baseurl+"filters?"+query);
    
   }
   const deleteuser=async (id:string)=>{
 
     
-    return axios.delete<optresponse[]>(`http://localhost/snigdh_ci4/Api/deleteuser/${id}`);
+    return axios.delete<optresponse[]>(`${baseurl}deleteuser/${id}`);
   }
 
   const updateUser=async (data:object,id:string)=>{
@@ -68,7 +49,7 @@ const alluser = async (page:number,record:number) =>{
     // console.log("editservice");
 
     
-    return axios.post<editresponse>(`http://localhost/snigdh_ci4/Api/updateuser/${id}`,data);
+    return axios.post<editresponse>(`${baseurl}updateuser/${id}`,data);
   }
   const allApplicationReq = async () =>{
 
@@ -76,7 +57,7 @@ const alluser = async (page:number,record:number) =>{
     //   'Authorization': getToken()}}
     
 
-      return axios.get("http://localhost/snigdh_ci4/Api/allApplication",);
+      return axios.get(baseurl+"allApplication",);
   }
   
 
@@ -85,4 +66,4 @@ const alluser = async (page:number,record:number) =>{
 
 
 
-  export {alluser,filter,deleteuser,updateUser,getToken,allApplicationReq};
+  export { alluser, filter, deleteuser, updateUser, getToken, allApplicationReq };

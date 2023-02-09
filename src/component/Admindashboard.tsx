@@ -1,5 +1,5 @@
 import React, { SyntheticEvent, useEffect, useState } from 'react'
-import { alluser, deleteuser, filter, response, optresponse, updateUser } from '../servies/admin'
+import { alluser, deleteuser, filter,  updateUser } from '../servies/admin'
 import Adminheader from './Adminheader'
 import Box from '@mui/material/Box';
 import { DataGrid, GridCellParams, GridColDef, GridRenderCellParams, GridRowId, GridToolbar, GridValueGetterParams } from '@mui/x-data-grid';
@@ -11,6 +11,7 @@ import { Col, Label, Modal, ModalBody, ModalHeader, Row } from 'reactstrap'
 import { updateLanguageServiceSourceFile } from 'typescript';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import { response } from '../servies/Interface';
 
 
 const Admindashboard = () => {
@@ -27,10 +28,12 @@ const Admindashboard = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [emailerror, setErroremail] = useState('');
     const [nameerror, setErroname] = useState('');
+    const [lnameerror, setErrolname] = useState('');
     const [moberror, setErrormob] = useState('');
     const emailregex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z.]{2,5}$/i;
     const phoneregex = /^[1-9]{1}[0-9]{9}$/i;
     const nameregex = /^[a-zA-Z]{3,16}$/i;
+    const [confirm, setConfirm] = useState({ fn: true, ln:true, email: true, mob: true});
     const navigate = useNavigate();
     
 
@@ -52,23 +55,37 @@ const Admindashboard = () => {
 
             if (emailregex.test(e.currentTarget.value) === false) {
                 setErroremail("Please Enter Valid Email Address i.e abc@zyx.com");
+                setConfirm((prevState) => { return { ...prevState, "email": false } })
                 return false;
                 
             }
             else {
                 setErroremail("")
-    
+                setConfirm((prevState) => { return { ...prevState, "email": true } })
                 return true;
             }
         }
         const checkName = (e: any) => {
             if (nameregex.test(e.currentTarget.value) === false) {
-                setErroname("Please Enter Valid Name");
+                setConfirm((prevState) => { return { ...prevState, "fn": false } })
+                setErroname("Please Enter Valid First Name");
                 return false;
             }
             else {
                 setErroname("")
-    
+                setConfirm((prevState) => { return { ...prevState, "fn": true } })
+                return true;
+            }
+        }
+        const checkLname = (e: any) => {
+            if (nameregex.test(e.currentTarget.value) === false) {
+                setConfirm((prevState) => { return { ...prevState, "ln": false } })
+                setErrolname("Please Enter Valid Last Name");
+                return false;
+            }
+            else {
+                setErrolname("")
+                setConfirm((prevState) => { return { ...prevState, "ln": true } })
                 return true;
             }
         }
@@ -76,10 +93,12 @@ const Admindashboard = () => {
         const checkMob = (e: any) => {
             if (phoneregex.test(e.currentTarget.value) === false) {
                 setErrormob("Please Enter Valid Mobile Number");
+                setConfirm((prevState) => { return { ...prevState, "mob": false } })
                 return false;
             }
             else {
                 setErrormob("")
+                setConfirm((prevState) => { return { ...prevState, "mob": true } })
                 return true;
             }
         }
@@ -228,7 +247,7 @@ const Admindashboard = () => {
                                     <input type="text" name="namef" {...nameF} placeholder='Name' id="namef" />
 
                                     <label htmlFor="mobilef">Mobile</label>
-                                    <input type="text" name="mobilef" placeholder='Mobile' {...mobF} id="mobilef" />
+                                    <input type="text" name="mobilef" placeholder='Mobile' {...mobF} id="mobilef" maxLength={10}/>
                                     <button className="btn btn-success" type="submit">Apply </button>
                                     <button className="btn btn-danger" type="button" onClick={resetForm} >Reset </button>
                                 </div>
@@ -271,11 +290,10 @@ const Admindashboard = () => {
                                 // edit(editId)
                                 evt.preventDefault();
                                 let data = new FormData(evt.currentTarget);
-                                if({checkName} &&{checkEmail} &&{checkMob}){
-
                                 
+                                if(confirm.fn && confirm.email && confirm.mob&& confirm.ln)
+                                {
                                 let formData = {
-
                                     "fname": data.get("fname"),
                                     "lname": data.get("lname"),
                                     "email": data.get("email"),
@@ -285,16 +303,19 @@ const Admindashboard = () => {
                                 let res = await updateUser(data, obj.id);
                                 // console.log(res)
                                 if (res.data.messages.success === 'true') {
-                                    setIsEditOpen(false)
                                     toast.success("Data Updated Successfully")
                                     alluser(page, pageSize).then(Res => {setUsers(Res.data.data);setTotalPages(Res.data.totalpages)}).catch(err => console.log(err));
+                                    setIsEditOpen(false)
                                     
                                     
                                 }
                                 else {
-                                    setIsEditOpen(false)
                                     toast.success("Duplicate Data");
+                                    // setIsEditOpen(false)
                                 }
+                                }
+                                else {
+                                    toast.error("Invalid Input")
                                 }
                                 
 
@@ -306,18 +327,23 @@ const Admindashboard = () => {
                                 </Row>
                                 <Row className='mt-2'>
                                     <Label>Last Name</Label>
-                                    <Col><input type="text" name="lname" className='form-control' defaultValue={obj.lname} /></Col>
-                                    <p className='p-2 m-2'></p>
+                                    <Col><input type="text" name="lname" className='form-control' onChangeCapture={(e)=>
+                                    {if(e.currentTarget.value.length >0 && checkLname(e))
+                                        console.log('valid');
+                                        else if (e.currentTarget.value.length ==0)
+                                        {setErrolname("");setConfirm((prevState) => { return { ...prevState, "ln": true } })}
+                                        else checkLname(e); }} defaultValue={obj.lname} /></Col>
+                                    <p className='text-danger p-2 m-2'>{lnameerror}</p>
                                 </Row>
                                 <Row className='mt-2'>
                                     <Label>Email</Label>
-                                    <Col><input type="text" name="email" className='form-control' onChangeCapture={checkEmail} defaultValue={obj.email} /></Col>
+                                    <Col><input type="text" name="email" className='form-control'  onChangeCapture={checkEmail} defaultValue={obj.email} /></Col>
                                     <p className='text-danger p-2 m-2'>{emailerror}</p>
 
                                 </Row>
                                 <Row className='mt-2'>
                                     <Label>Mobile</Label>
-                                    <Col><input type="text" name="mobile" className='form-control' onChangeCapture={checkMob}defaultValue={obj.mobile} /></Col>
+                                    <Col><input type="text" name="mobile" className='form-control' onChangeCapture={checkMob}defaultValue={obj.mobile} maxLength={10}/></Col>
                                     <p className='text-danger p-2 m-2'>{moberror}</p>
 
                                 </Row>
@@ -325,8 +351,8 @@ const Admindashboard = () => {
                                 <Row className='mt-4'>
                                     <Col lg={12} className="row">
                                         <div className='d-flex justify-content-end'>
-                                            <button onClick={() => setIsEditOpen(false)} className="col-md-3 ms-2 btn btn-success"  >Cancel</button>
                                             <button type='submit' className="col-md-3 ms-2 btn btn-danger">Update</button>
+                                            <button onClick={() => setIsEditOpen(false)} className="col-md-3 ms-2 btn btn-success"  >Cancel</button>
 
                                         </div>
                                     </Col>

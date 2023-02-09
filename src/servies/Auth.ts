@@ -1,26 +1,20 @@
 import axios from "axios";
+import { baseurl } from "./User";
+import { authResponse, response } from "./Interface";
 
 
-interface response {
-  messages: {
-    success: string,
-    message:string,
-    role:string,
-    id:string,
-    authorization:string,
-  }
-}
+
 
 const signup = async (data:object) =>{
 
   
-  return axios.post<response>("http://localhost/snigdh_ci4/Api/signup",data)
+  return axios.post<authResponse>(baseurl+"signup",data)
 
 }
 const login = async (data:object) =>{
 
   
-  return axios.post<response>("http://localhost/snigdh_ci4/Api/login",data)
+  return axios.post<authResponse>(baseurl+"login",data)
 
 }
 

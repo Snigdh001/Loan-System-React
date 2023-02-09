@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import './css/loan_registration.css'
-import { UserDetailResponse, getDetailsApi, loanapply } from '../servies/User'
+import { getDetailsApi, loanapply } from '../servies/User'
 import UserHeader from './UserHeader'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { UserDetailResponse } from '../servies/Interface'
 
 const Applyloan = () => {
     const navigate = useNavigate();

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import '../../node_modules/bootstrap/dist/js/bootstrap.bundle.js'
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { UserDetailResponse, getDetailsApi } from '../servies/User';
+import {getDetailsApi } from '../servies/User';
 import { Col, Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { UserDetailResponse } from '../servies/Interface.js';
 
 const Adminheader = () => {
     const [isMyProfileOpen, setIsMyProfileOpen] = useState(false);

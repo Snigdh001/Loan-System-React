@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 import '../component/css/header.css'
 import { toast } from 'react-toastify';
 import { Modal, ModalHeader, ModalBody, Col, Row } from 'reactstrap';
-import { UserDetailResponse, getDetailsApi } from '../servies/User';
+import {  getDetailsApi } from '../servies/User';
 import { flexbox, height } from '@mui/system';
 import { Link } from 'react-router-dom';
 import { red } from '@mui/material/colors';
+import { UserDetailResponse } from '../servies/Interface';
 
 
 const UserHeader = () => {

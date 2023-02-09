@@ -19,58 +19,68 @@ const Login = () => {
     const [passcheck,setPass]=useState('');
     const [emailerror,setErroremail]=useState('');
     const [passerror,setErrorpass]=useState('');
-    const checkEmail =(e:React.ChangeEvent<HTMLInputElement>)=>{
+    const checkEmail =(e:any)=>{
         setEmail(e.currentTarget.value);
-        if(emailregex.test(e.currentTarget.value) ==false){
-            setErroremail("Please Enter Valid Email Address");
-            return false;
-        }
-        else{
-            setErroremail("")
-            return true;
+        if (email.value == "")
+            setErroremail("Email is required");
+            else{
+            if(emailregex.test(email.value) ==false){
+                setErroremail("Please Enter Valid Email Address i.e xyz@abc.in");
+                return false;
+            }
+            else{
+                setErroremail("")
+                return true;
+            }
         }
     }
-    const checkPass =(e:React.ChangeEvent<HTMLInputElement>)=>{
+    const checkPass =(e:any)=>{
         setPass(e.currentTarget.value);
-        if(passregex.test(e.currentTarget.value) ===false){
-            setErrorpass("Please Enter Valid Password");
-            
-            return false;
-        }
-        else{
-            setErrorpass("")
-            return true;
-        }
+        if (password.value == "")
+            setErrorpass("Password is required");
+            else{
+
+                if(passregex.test(password.value) ===false){
+                    setErrorpass("Please Enter Valid Password (min 6 characters)");
+                    
+                    return false;
+                }
+                else{
+                    setErrorpass("")
+                    return true;
+                }
+                
+            }
     }
-    const submitHander = async (evt: React.SyntheticEvent) => {
+    const submitHander = async (evt: any) => {
         evt.preventDefault()
         {       
-            if (email.value == "")
-            setErroremail("Field is required");
-            if (password.value == "")
-                setErrorpass("Field is required");
-            
+             checkEmail(evt)    
+             checkPass(evt)
+            if(checkEmail(evt)&&checkPass(evt))
+            {
+
                 const data = {
-                  
+                    
                     email: email.value,
                     password: password.value,
                 };
                 const result = await login(data);
-                console.log(result);
+                // console.log(result);
                 if(result.data.messages.success==="true")
                 {
                     // console.log(result.data);
-                     let session ={
+                    let session ={
                         id:result.data.messages.id as string,
                         role:result.data.messages.role as string ,
                         isLoggedin:result.data.messages.success as string,
                         authorization:result.data.messages.authorization as string,
-                     }
+                    }
                     
                     
                     localStorage.setItem("Session",JSON.stringify(session));
 
-
+                    
                     if(session.role=="admin")
                     {
                         toast("Logged In Successfully! : )");
@@ -86,6 +96,7 @@ const Login = () => {
                     toast("Invalid Data");
                     toast("Login Failed : (");
                 }
+            }
             }}
        
     
@@ -106,7 +117,7 @@ const Login = () => {
                                                         <div className="form-outline">
                                                             <label className="form-label" htmlFor="form3Examplev4">Email Address</label>
                                                             <input type="text" id="form3Examplev4"
-                                                                className="form-control form-control-lg" {...email} onChangeCapture={checkEmail} />
+                                                                className="form-control form-control-lg" {...email} onChangeCapture={()=>setErroremail("")} />
                                                                 <p className='text-danger p-2 m-2'>{emailerror}</p>
                                                         </div>
                                                     </div>
@@ -116,7 +127,7 @@ const Login = () => {
                                                             <div className="form-outline">
                                                                 <label className="form-label" htmlFor="form3Examplev5">Password</label>
                                                                 <input type="password" id="form3Examplev5"
-                                                                    className="form-control form-control-lg" {...password} onChangeCapture={checkPass}/>
+                                                                    className="form-control form-control-lg" {...password} onChangeCapture={()=>setErrorpass("")}/>
                                                                     <p className='text-danger p-2 m-2'>{passerror}</p>
                                                             </div>
                                                         </div>

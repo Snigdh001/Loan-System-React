@@ -119,7 +119,7 @@ const LoanApplicationList = () => {
       remark: formdata.get('remark'),
       status: formdata.get('status')
     }
-    console.log(data);
+    // console.log(data);
     let result = await loanAction(data)
     if (result.data.success === 'true') {
       toast("Action Applied")
