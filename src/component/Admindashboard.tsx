@@ -244,6 +244,8 @@ const Admindashboard = () => {
                                     <input type="text" name="emailf"  {...emailF} placeholder='Email' id="emailf" />
                                     
                                     <label htmlFor="namef">Name</label>
+
+                                    
                                     <input type="text" name="namef" {...nameF} placeholder='Name' id="namef" />
 
                                     <label htmlFor="mobilef">Mobile</label>
