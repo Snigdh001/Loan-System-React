@@ -11,8 +11,8 @@ const Applyloan = () => {
     const [userDetails, setUserDetails] = useState<UserDetailResponse>()
     const panRegex = /^[A-Z0-9]{10}$/;  // Proper Regex for pancard is "/^([A-Z]){5}([0-9]){4}([A-Z]){1}$/" include 5-Alphabet,4-digit,1-Alphabet
     const aadharRegex = /^[1-9]{1}[0-9]{11}$/; //replacement regex is "/^\d{12}$/"
-    const incomeRegex = /^[1-9]{1}[0-9]{4,8}$/;
-    const loanRegex = /^[1-9]{1}[0-9]{3,8}$/;
+    const incomeRegex = /^[1-9]{1}[0-9]{4,7}$/;
+    const loanRegex = /^[1-9]{1}[0-9]{3,7}$/;
     const durationRegex = /^[1-9]{1}[0-9]{0,3}$/;
     const addressRegex = /^[A-Za-z0-9\s,.'-]+$/;
     const pincodeRegex = /^[1-9]{1}[0-9]{5}$/;
